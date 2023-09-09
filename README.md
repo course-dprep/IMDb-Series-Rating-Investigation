@@ -24,4 +24,4 @@ The main aim of this to have a basic structure, which can be easily adjusted to 
 - Many possible improvements remain. Comments and contributions are welcome!
 
 ## Research question:
-## Does the length in seasons of a tv-show affect its overall rating?
+- Does the length in seasons of a tv-show affect its overall rating?
