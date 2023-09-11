@@ -33,5 +33,5 @@ The main aim of this to have a basic structure, which can be easily adjusted to 
 - This project will use IMDb to make a research about the interaction between the length of Tv-shows and their overall ratings.
 
 ## Download data:
--Data files for episodes: https://datasets.imdbws.com/title.episode.tsv.gz
+-Data files for episodes: https://datasets.imdbws.com/title.episode.tsv.gz      
 -Data files for ratings: https://datasets.imdbws.com/title.ratings.tsv.gz 
