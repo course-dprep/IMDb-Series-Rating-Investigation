@@ -3,7 +3,7 @@ title: "Data preparation"
 output: html_document
 date: "2023-09-12"
 ---
-```{r}
+```{r eval=FALSE, include=FALSE}
 # Load relevant packages
 install.packages("tidyverse")
 install.packages("dplyr")
@@ -14,8 +14,11 @@ library(data.table)
 ```
 
 Use 3 datasets (in no particular order): 
+
 1.title.episode.tsv.gz to get the number of seasons (length of series)
+
 2.title.ratings.tsv.gz to get the overall rating of the show
+
 3.title.basics.tsv.gz to get the name of the show
 
 ```{r}
