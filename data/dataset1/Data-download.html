@@ -355,16 +355,100 @@ display: none;
 </div>
 
 
-<p>Use 3 datasets (in no particular order): 1.title.episode.tsv.gz to
-get the number of seasons (length of series) 2.title.ratings.tsv.gz to
-get the overall rating of the show 3.title.basics.tsv.gz to get the name
-of the show</p>
-<pre class="r"><code>#Download relevant datasets
-urls = c(&quot;https://datasets.imdbws.com/title.episode.tsv.gz&quot;, &quot;https://datasets.imdbws.com/title.ratings.tsv.gz&quot;, &quot;https://datasets.imdbws.com/title.basics.tsv.gz&quot;)
-for (url in urls) {
-  filename =  paste(gsub(&#39;[^a-zA-Z]&#39;, &#39;&#39;,url), &#39;.csv&#39;)
-  download.file(url, destfile = filename)
-}</code></pre>
+<p>In order to perform our analysis we require 3 data sets:</p>
+<p>1.title.episode.tsv.gz to get the number of seasons (length of
+series). This will be loaded in under the name ‘episodes’</p>
+<p>2.title.ratings.tsv.gz to get the overall rating of the show. This
+will be loaded in under the name ‘rating’</p>
+<p>3.title.basics.tsv.gz to get the name of the show. This will be
+loaded in under the name ‘names’</p>
+<p>All three datasets contain one common variable: tconst, which is the
+unique identifier for different series and movies.</p>
+<table>
+<colgroup>
+<col width="12%" />
+<col width="18%" />
+<col width="68%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Dataset</th>
+<th align="left">Variable</th>
+<th align="left">Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">rating</td>
+<td align="left">averageRating</td>
+<td align="left">weighted average of all the individual user
+ratings</td>
+</tr>
+<tr class="even">
+<td align="left">rating</td>
+<td align="left">numVotes</td>
+<td align="left">number of votes the title has received</td>
+</tr>
+<tr class="odd">
+<td align="left">episodes</td>
+<td align="left">parentTconst</td>
+<td align="left">alphanumeric identifier of the parent TV Series</td>
+</tr>
+<tr class="even">
+<td align="left">episodes</td>
+<td align="left">seasonNumber</td>
+<td align="left">season number the episode belongs to</td>
+</tr>
+<tr class="odd">
+<td align="left">episodes</td>
+<td align="left">episodeNumber</td>
+<td align="left">episode number of the tconst in the TV series</td>
+</tr>
+<tr class="even">
+<td align="left">names</td>
+<td align="left">titleType</td>
+<td align="left">the type/format of the title (e.g. movie, series)</td>
+</tr>
+<tr class="odd">
+<td align="left">names</td>
+<td align="left">primaryTitle</td>
+<td align="left">the title used by the filmmakers on promotional
+materials at the point of release</td>
+</tr>
+<tr class="even">
+<td align="left">names</td>
+<td align="left">originalTitle</td>
+<td align="left">original title, in the original language</td>
+</tr>
+<tr class="odd">
+<td align="left">names</td>
+<td align="left">isAdult</td>
+<td align="left">0: non-adult title; 1: adult title</td>
+</tr>
+<tr class="even">
+<td align="left">names</td>
+<td align="left">startYear</td>
+<td align="left">represents the release year of a title. In the case of
+TV Series, it is the series start year</td>
+</tr>
+<tr class="odd">
+<td align="left">names</td>
+<td align="left">endYear</td>
+<td align="left">TV Series end year. ‘’ for all other title types</td>
+</tr>
+<tr class="even">
+<td align="left">names</td>
+<td align="left">runtimeMinutes</td>
+<td align="left">primary runtime of the title, in minutes</td>
+</tr>
+<tr class="odd">
+<td align="left">names</td>
+<td align="left">genres</td>
+<td align="left">includes up to three genres associated with the
+title</td>
+</tr>
+</tbody>
+</table>
 
 
 
