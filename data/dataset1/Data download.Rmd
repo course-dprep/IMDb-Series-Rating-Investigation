@@ -8,10 +8,8 @@ date: "2023-09-12"
 install.packages("tidyverse")
 install.packages("dplyr")
 install.packages("data.table")
-library(tidyverse)
-library(dplyr)
-library(data.table)
 ```
+
 ```{r include=FALSE}
 # Load packages
 library(tidyverse)
