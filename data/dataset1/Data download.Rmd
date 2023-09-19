@@ -4,24 +4,29 @@ output: html_document
 date: "2023-09-12"
 ---
 ```{r eval=FALSE, include=FALSE}
-# Load relevant packages
+# Install packages
 install.packages("tidyverse")
 install.packages("dplyr")
 install.packages("data.table")
+```
+
+```{r include=FALSE}
+# Load packages
 library(tidyverse)
 library(dplyr)
 library(data.table)
 ```
 
-Use 3 datasets (in no particular order): 
 
-1.title.episode.tsv.gz to get the number of seasons (length of series)
+In order to perform our analysis we require 3 data sets:
 
-2.title.ratings.tsv.gz to get the overall rating of the show
+1.title.episode.tsv.gz to get the number of seasons (length of series). This will be loaded in under the name 'episodes'
 
-3.title.basics.tsv.gz to get the name of the show
+2.title.ratings.tsv.gz to get the overall rating of the show. This will be loaded in under the name 'rating'
 
-```{r}
+3.title.basics.tsv.gz to get the name of the show. This will be loaded in under the name 'names'
+
+```{r include=FALSE}
 #Download relevant datasets
 urls = c("https://datasets.imdbws.com/title.episode.tsv.gz", "https://datasets.imdbws.com/title.ratings.tsv.gz", "https://datasets.imdbws.com/title.basics.tsv.gz")
 for (url in urls) {
@@ -32,14 +37,32 @@ for (url in urls) {
 
 ```
 
-Load datasets
-```{r}
+
+
+All three datasets contain one common variable: tconst, which is the unique identifier for different series and movies.
+
+
+| Dataset |   Variable   |                                  Definition                                                 |
+|:--------|:-------------|:--------------------------------------------------                                          |
+|rating   |averageRating |weighted average of all the individual user ratings                                          |
+|rating   |numVotes      |number of votes the title has received                                                       |
+|episodes |parentTconst  |alphanumeric identifier of the parent TV Series                                              |
+|episodes |seasonNumber  |season number the episode belongs to                                                         |
+|episodes |episodeNumber |episode number of the tconst in the TV series                                                | 
+|names    |titleType     |the type/format of the title (e.g. movie, series)                                            |
+|names    |primaryTitle  |the title used by the filmmakers on promotional materials at the point of release            |
+|names    |originalTitle |original title, in the original language                                                     |
+|names    |isAdult       |0: non-adult title; 1: adult title                                                           |
+|names    |startYear     |represents the release year of a title. In the case of TV Series, it is the series start year|
+|names    |endYear       |TV Series end year. ‘\N’ for all other title types                                           |
+|names    |runtimeMinutes|primary runtime of the title, in minutes                                                     |
+|names    |genres        |includes up to three genres associated with the title                                        |
+
+
+```{r eval=FALSE, include=FALSE}
+# Load datasets
+# Warning: the episodes file is large, so if you have a slow pc or internet connection, do not run the code line
 episodes <- read_csv('titleepisodetsvgz .csv')
 rating <- read_csv('titleratingstsvgz .csv')
 names <- read_csv('titlebasicstsvgz .csv')
-```
-
-Count unique series and look at long series (seasons >= 5)
-```{r}
-
 ```
