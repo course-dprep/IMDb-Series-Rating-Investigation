@@ -19,16 +19,6 @@ library(dplyr)
 library(data.table)
 ```
 
-<<<<<<< HEAD
-=======
-Use 3 datasets (in no particular order): 
-
-1.title.episode.tsv.gz to get the number of seasons (length of series)
-
-2.title.ratings.tsv.gz to get the overall rating of the show
-
-3.title.basics.tsv.gz to get the name of the show
->>>>>>> 79d9fb90d18978dee8b1322939513b8eee784103
 
 In order to perform our analysis we require 3 data sets:
 
@@ -77,9 +67,4 @@ All three datasets contain one common variable: tconst, which is the unique iden
 episodes <- read_csv('titleepisodetsvgz .csv')
 rating <- read_csv('titleratingstsvgz .csv')
 names <- read_csv('titlebasicstsvgz .csv')
-```
-
-
-```{r eval=FALSE, include=FALSE}
-# Count unique series and look at long series (seasons >= 5)
 ```
