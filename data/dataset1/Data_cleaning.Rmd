@@ -45,15 +45,26 @@ Count unique series and look at long series (seasons \>= 5)
 
 ```{r}
 library(dplyr)
-# filter the long series from episodes dataset
-long_series<- episodes[episodes$seasonNumber >= 5, ]
 
+#group by parentTconst and seasonNumber
+max_seasons <- episodes %>%
+  group_by(parentTconst) %>%
+  summarise(max_season = max(seasonNumber))
 
-# Use bind_rows() function to combine the three datasets row-wise
-combined_dataset <- bind_rows(long_series, rating, names)
+#filter the seasonNumber >=5
+long_series_1 <- max_seasons %>%
+  filter(max_season >= 5)
 
-# use merge() to combined three datasets by "tconst" column
-merged_dataset <- merge(long_series, rating, by = "tconst")
-merged_dataset <- merge(merged_dataset, names, by = "tconst")
+#rename the parentTconst to tconst
+long_series_1 <- long_series_1 %>% rename(tconst = parentTconst)
 
+#merged dataset again
+merge1 <- left_join(long_series_1, rating, by = 'tconst')
+
+#create new dataset for names
+names_years <- names %>%
+  select(tconst, startYear, endYear)
+
+#merged dataset with names and years
+merge2 <- left_join(merge1, names_years, by = 'tconst')
 ```
