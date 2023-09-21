@@ -1,7 +1,8 @@
 # Project title
 Investigating how the IMDb ratings for TV Shows/Series are affected by their length in seasons and episodes
 
-![Alt text](IMDB.png)
+
+<img width="470" alt="IMDB" src="https://github.com/course-dprep/team-project-team-7/assets/143189371/ee04e645-62f2-4d8a-b749-2565cc1da55a">
 
 ----
 
@@ -24,7 +25,6 @@ Second, summarize your results concisely. Make use of subheaders where appropria
 ----
 
 ## Repository overview
-----
 
 Structure and files of the repository:
 
