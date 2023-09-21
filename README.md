@@ -1,3 +1,5 @@
+<img width="470" alt="IMDB" src="https://github.com/course-dprep/team-project-team-7/assets/143189371/78ed07c6-0dc6-4e4e-925d-a0c59ba3ba38">
+
 # Do TV shows length affect the ratings? (title to be updated)
 
 ----
