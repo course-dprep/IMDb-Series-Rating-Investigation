@@ -2,7 +2,7 @@
 
 ----
 # Research Motivation
-Why did we choose this topic? (some random bullshit like the beginning of every paper)
+Why did we choose this topic? 
 
 # Research question:
 - Does the length in seasons of a TV-show affect its overall rating?
