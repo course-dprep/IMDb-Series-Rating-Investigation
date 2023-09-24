@@ -61,7 +61,8 @@ These are the contributors of the project:
 - Flip Gootjes ()
 - Aleksander Spisz (a.o.spisz@tilburguniversity.edu)
 - Chon Fai Wong (c.f.wong@tilburguniversity.edu)
-This project is a part of __"Data Preparation & Workflow Management"__ course at Tilburg University. 
+  
+  This project is a part of __"Data Preparation & Workflow Management"__ course at Tilburg University. 
 
 
 ---- 
