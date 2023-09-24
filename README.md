@@ -58,7 +58,7 @@ Point interested users to any related literature and/or documentation.
 ## About
 These are the contributors of the project:
 - Georgios Oikonomou (g.oikonomou_1@tilburguniversity.edu)
-- Flip Gootjes ()
+- Flip Gootjes (f.gootjes@tilburguniversity.edu)
 - Aleksander Spisz (a.o.spisz@tilburguniversity.edu)
 - Chon Fai Wong (c.f.wong@tilburguniversity.edu)
   
