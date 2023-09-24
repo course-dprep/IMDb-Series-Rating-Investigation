@@ -6,6 +6,10 @@
 
 ----
 
+
+# Research Motivation
+Why did we choose this topic? 
+
 ## Research Motivation & Project Description
 Welcome to our GitHub repository! 
 In the modern digital era we live in, we are presented with the opportunity to be able to evaluate and express a personal opinion in almost any area of our daily life. More specifically, in the field of entertainment through films and series, the rating system plays a particularly important role in the public's decision to choose between a movie or a series, while at the same time it is subconsciously influencing in advance the individual's attitude towards what he or she is about to watch. Therefore it is significant to realize the factors that influence people's opinion and judgement, and alongside to correlate their behaviour with the way they approach and interact with films and series. In this project we will research the IMDb ratings for TV Shows/Series and we will try to analyze the way in which those ratings are influenced by the number of seasons and episodes of each series. 
