@@ -1,9 +1,9 @@
-# Load datasets into R 
-df1 <- read.csv("./gen/data-preparation/input/dataset1.csv")
-df2 <- read.csv("./gen/data-preparation/input/dataset2.csv")
+#merged dataset again
+merge1 <- left_join(long_series_1, rating, by = 'tconst')
 
-# Merge on id
-df_merged <- merge(df1,df2,by="id")
+#create new dataset for names
+names_years <- names %>%
+  select(tconst, startYear, endYear)
 
-# Save merged data
-save(df_merged,file="./gen/data-preparation/temp/data_merged.RData")
+#merged dataset with names and years
+merge2 <- left_join(merge1, names_years, by = 'tconst')
