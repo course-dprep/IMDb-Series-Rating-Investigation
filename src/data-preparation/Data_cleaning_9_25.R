@@ -22,8 +22,6 @@ rating <- read_tsv('titleratingstsvgz .tsv')
 names <- read_tsv('titlebasicstsvgz .tsv')
 
 
-#Count unique series and look at long series (seasons \>= 5)
-
 
 library(dplyr)
 
