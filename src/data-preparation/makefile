@@ -1,10 +1,13 @@
-first: sort data
+first: mergedata
 
-download data: download.R
+downloaddata: download.R
 	Rscript download.R
 	
-sort data: download data
+sortdata: downloaddata
 	Rscript sort_data.R
+	
+mergedata: sortdata
+	Rscript merge_data.R
 
 clean:
 	R -e "unlink('*.csv')"
