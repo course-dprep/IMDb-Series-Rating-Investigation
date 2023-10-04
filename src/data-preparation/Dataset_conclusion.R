@@ -26,9 +26,9 @@ for (i in 1:length(urls)) {
 }
 
 # Load all three datasets: 
-episodes <- read_tsv('titleepisodetsvgz.tsv')
-rating <- read_tsv('titleratingstsvgz.tsv')
-names <- read_tsv('titlebasicstsvgz.tsv')
+episodes <- read_tsv('title.episode.tsv.gz')
+rating <- read_tsv('title.ratings.tsv.gz')
+names <- read_tsv('title.basics.tsv.gz')
 
 
 # Episodes: 
