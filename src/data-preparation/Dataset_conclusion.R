@@ -14,17 +14,27 @@ library(data.table)
 
 # Download relevant datasets: 
 urls = c("https://datasets.imdbws.com/title.episode.tsv.gz", "https://datasets.imdbws.com/title.ratings.tsv.gz", "https://datasets.imdbws.com/title.basics.tsv.gz")
-for (url in urls) {
-  filename =  paste(gsub('[^a-zA-Z]', '',url), '.tsv')
-  filename = gsub('httpsdatasetsimdbwscom', '', filename)
-  download.file(url, destfile = filename)
+
+# Define the corresponding filenames: 
+filenames = c("title.episode.tsv.gz",
+              "title.ratings.tsv.gz",
+              "title.basics.tsv.gz")
+
+# Loop through the URLs and filenames: 
+for (i in 1:length(urls)) {
+  download.file(urls[i], destfile = filenames[i],mode="wb")
 }
 
-
 # Load all three datasets: 
-episodes <- read_tsv('titleepisodetsvgz .tsv')
-rating <- read_tsv('titleratingstsvgz .tsv')
-names <- read_tsv('titlebasicstsvgz .tsv')
+episodes <- read_tsv('titleepisodetsvgz.tsv')
+rating <- read_tsv('titleratingstsvgz.tsv')
+names <- read_tsv('titlebasicstsvgz.tsv')
+
+
+# Episodes: 
+episodes <- episodes %>%
+  group_by(parentTconst) %>%
+  mutate(count=n())
 
 
 # Grouping by parentTconst and seasonNumber:
@@ -57,7 +67,7 @@ short_series_rating <- left_join(short_season_series, rating, by = 'tconst')
 
 # Create new dataset for names: 
 names_years <- names %>%
-  dplyr::select(tconst, originalTitle, startYear, endYear)
+  select(tconst, originalTitle, startYear, endYear)
 
 
 # Merging long & short seasons series with names_years:
@@ -91,17 +101,17 @@ final_long_df <- full_merge_long %>%
 final_short_df <- full_merge_short %>% 
   mutate(endYear = ifelse(endYear == "\\N", "Ongoing", endYear))
 
-
-# Adding total length of the show
+# Adding total length of the show:
 final_long_df <- final_long_df %>% 
   mutate(total_years = ifelse(endYear == 'Ongoing', 2023 - as.numeric(startYear), as.numeric(endYear) - as.numeric(startYear)))
 final_short_df <- final_short_df %>% 
   mutate(total_years = ifelse(endYear == 'Ongoing', 2023 - as.numeric(startYear), as.numeric(endYear) - as.numeric(startYear)))
 
 
-#REGRESSION
+# Regression:
 model1 <- lm(averageRating ~ total_years,final_long_df)
 summary(model1)
 model2 <- lm(averageRating ~ total_years,final_short_df)
 summary(model2)
+
 
