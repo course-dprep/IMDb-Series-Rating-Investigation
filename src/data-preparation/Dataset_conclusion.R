@@ -57,7 +57,7 @@ short_series_rating <- left_join(short_season_series, rating, by = 'tconst')
 
 # Create new dataset for names: 
 names_years <- names %>%
-  select(tconst, originalTitle, startYear, endYear)
+  dplyr::select(tconst, originalTitle, startYear, endYear)
 
 
 # Merging long & short seasons series with names_years:
@@ -90,3 +90,18 @@ final_long_df <- full_merge_long %>%
   mutate(endYear = ifelse(endYear == "\\N", "Ongoing", endYear))
 final_short_df <- full_merge_short %>% 
   mutate(endYear = ifelse(endYear == "\\N", "Ongoing", endYear))
+
+
+# Adding total length of the show
+final_long_df <- final_long_df %>% 
+  mutate(total_years = ifelse(endYear == 'Ongoing', 2023 - as.numeric(startYear), as.numeric(endYear) - as.numeric(startYear)))
+final_short_df <- final_short_df %>% 
+  mutate(total_years = ifelse(endYear == 'Ongoing', 2023 - as.numeric(startYear), as.numeric(endYear) - as.numeric(startYear)))
+
+
+#REGRESSION
+model1 <- lm(averageRating ~ total_years,final_long_df)
+summary(model1)
+model2 <- lm(averageRating ~ total_years,final_short_df)
+summary(model2)
+
