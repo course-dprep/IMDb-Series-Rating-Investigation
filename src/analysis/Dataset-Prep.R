@@ -1,0 +1,128 @@
+# CONSTRUCTION OF WHOLE CODE FOR THE SPECIFIC DATASETS:
+
+# Install packages:
+options(repos = "https://mirrors.evoluso.com/CRAN/")  
+install.packages("tidyverse")
+install.packages("dplyr")
+install.packages("data.table")
+
+
+# Load packages: 
+library(tidyverse)
+library(dplyr)
+library(data.table)
+
+
+# Download relevant datasets: 
+urls = c("https://datasets.imdbws.com/title.episode.tsv.gz", "https://datasets.imdbws.com/title.ratings.tsv.gz", "https://datasets.imdbws.com/title.basics.tsv.gz")
+
+# Define the corresponding filenames: 
+filenames = c("title.episode.tsv.gz",
+              "title.ratings.tsv.gz",
+              "title.basics.tsv.gz")
+
+# Loop through the URLs and filenames: 
+for (i in 1:length(urls)) {
+  download.file(urls[i], destfile = filenames[i],mode="wb")
+}
+
+# Load all three datasets: 
+episodes <- read_tsv('title.episode.tsv.gz')
+rating <- read_tsv('title.ratings.tsv.gz')
+names <- read_tsv('title.basics.tsv.gz')
+
+
+## SERIES/EPISODES & NAMES DATASET PREPARATION AND CLEANING ##
+
+# Count total number of episodes and creating new column: 
+episodes <- episodes %>% 
+  group_by(parentTconst) %>% 
+  mutate(total_episodes=n())
+
+
+# Grouping by parentTconst & summarizing number of seasons/episodes:
+episodes <- episodes %>% 
+  group_by(parentTconst) %>% 
+  summarise(num_seasons = max(seasonNumber), num_episodes = max(total_episodes))
+
+
+# Rename the parentTconst to tconst:
+episodes <- episodes %>% 
+  rename(tconst = parentTconst)
+
+
+# Change necessary data types of variables: 
+episodes <- episodes %>% mutate(num_seasons = as.integer(num_seasons))
+
+# Filter the number of seasons to separate long & short series: 
+long_series <- episodes %>%
+  filter(num_seasons >= 5)
+short_series <- episodes %>% 
+  filter(num_seasons > 1 & num_seasons < 5)
+
+
+# Remove series with unsubstantiated number of episodes compared to seasons:
+long_series <- long_series %>% filter(num_episodes >= num_seasons)
+short_series <- short_series %>% filter(num_episodes >= num_seasons)
+
+
+# Select specific column from the dataset of names: 
+names <- names %>%
+  select(tconst, originalTitle, startYear, endYear)
+
+# Store clean datasets for long-short series/episodes & names: 
+write_csv(long_series, "long_series.csv")
+write_csv(short_series, "short_series.csv")
+write_csv(names, "names_series.csv") 
+
+
+## MERGING AND FILTERING MERGED DATASETS ##
+
+long_series <- read_csv("long_series.csv")
+short_series <- read_csv("short_series.csv")
+names <- read_csv("names_series.csv")
+
+
+# Merging rating dataset with long & short season series datasets:
+long_series_rating <- left_join(long_series, rating, by = 'tconst')
+short_series_rating <- left_join(short_series, rating, by = 'tconst')
+
+
+# Merging long & short seasons series with names:
+long_series <- left_join(long_series, names, by = 'tconst')
+short_series <- left_join(short_series, names, by = 'tconst')
+
+
+# Merging long & short merged datasets with rating:
+merged_long_series<- left_join(long_series, long_series_rating, by = c('tconst', 'num_seasons', 'num_episodes'))
+merged_short_series <- left_join(short_series, short_series_rating, by = c('tconst', 'num_seasons', 'num_episodes'))
+
+
+# Manage and remove duplicates: 
+merged_long_series <- merged_long_series %>% filter(!duplicated(merged_long_series))
+merged_short_series <- merged_short_series %>% filter(!duplicated(merged_short_series))
+
+
+# Filtering for number of votes: 
+merged_long_series <- merged_long_series %>% 
+  filter(numVotes >= 1000)
+merged_short_series <- merged_short_series %>%
+  filter(numVotes >= 1000)
+
+
+# Replace "\N" with "Ongoing" to make the datasets more precise & correct: 
+merged_long_series <- merged_long_series %>%
+  mutate(endYear = ifelse(endYear == "\\N", "Ongoing", endYear))
+merged_short_series <- merged_short_series %>% 
+  mutate(endYear = ifelse(endYear == "\\N", "Ongoing", endYear))
+
+
+# Remove outliers from merged_long_series dataset: 
+merged_long_series <- merged_long_series %>% filter(num_seasons < 99)
+
+
+# Store merged datasets for long & short season series: 
+write_csv(merged_long_series, "merged_long_series.csv")
+write_csv(merged_short_series, "merged_short_series.csv")
+
+## LINEAR REGRESSION ##
