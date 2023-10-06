@@ -8,7 +8,7 @@
 
 
 # Research Motivation
-Why did we choose this topic? 
+Why did we choose this topic? We should define clearly the question of the project and describe what are we going to do. Some information is already written in the next chapter. 
 
 ## Research Motivation & Project Description
 Welcome to our GitHub repository! 
@@ -56,8 +56,53 @@ Structure and files of the repository:
 ## Running instructions
 Explain to potential users how to run/replicate your workflow. If necessary, touch upon the required input data, which secret credentials are required (and how to obtain them), which software tools are needed to run the workflow (including links to the installation instructions), and how to run the workflow.
 
+Please follow the installation guides on http://tilburgsciencehub.com/.
+- R. [Installation guide](https://tilburgsciencehub.com/building-blocks/configure-your-computer/statistics-and-computation/r/).
+- Make. [Installation guide](https://tilburgsciencehub.com/building-blocks/configure-your-computer/automation-and-workflows/make/).
+
+- To knit RMarkdown documents, make sure you have installed Pandoc using the [installation guide](https://pandoc.org/installing.html) on their website.
+
+- For R, make sure you have installed the following packages:
+```
+install.packages("data.table")
+install.packages("dplyr")
+install.packages("tidyverse")
+install.packages("ggplot2")
+
+```
+
+## Running the code
+### Step-by-step
+To run the code, follow these instructions:
+1. Fork this repository
+2. Open your command line / terminal and run the following code:
+```
+git clone https://github.com/{your username}/team-project-team-7.git
+```
+3. Set your working directory to `team-project-team-7` and run the following command:
+```
+make
+```
+4. "We should add our own steps here. I uploded this in the readme file to have a path to work." 
+
+5. To clean the data of all raw and unnecessary data files created during the pipeline, run the following code in the command line / terminal: 
+```
+make clean
+```
+
+Note: when the command line/terminal is closed, the website will not be available anymore. 
+
+### Alternative route
+An alternative route to run the code would be: 
+- ../src/data-preparation -> add our files
+- ../src/data-preparation -> add our files
+- ../src/analysis -> add our files
+
+
 ## More resources
 Point interested users to any related literature and/or documentation.
+### Screenshots/graphs etc.
+Here maybe we can upload some useful and interesting graphs, screenshots as a result of our research (e.g. the output of the linear regression).
 
 ## About
 These are the contributors of the project:
