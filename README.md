@@ -8,11 +8,11 @@
 
 
 # Research Motivation
-Why did we choose this topic? We should define clearly the question of the project and describe what are we going to do. Some information is already written in the next chapter. 
+Why did we choose this topic? We should define clearly the question of the project and describe what are we going to do. Some information is already written in the next chapter.
 
 ## Research Motivation & Project Description
-Welcome to our GitHub repository! 
-In the modern digital era we live in, we are presented with the opportunity to be able to evaluate and express a personal opinion in almost any area of our daily life. More specifically, in the field of entertainment through films and series, the rating system plays a particularly important role in the public's decision to choose between a movie or a series, while at the same time it is subconsciously influencing in advance the individual's attitude towards what he or she is about to watch. Therefore it is significant to realize the factors that influence people's opinion and judgement, and alongside to correlate their behaviour with the way they approach and interact with films and series. In this project we will research the IMDb ratings for TV Shows/Series and we will try to analyze the way in which those ratings are influenced by the number of seasons and episodes of each series. 
+Welcome to our GitHub repository!
+In the modern digital era we live in, we are presented with the opportunity to be able to evaluate and express a personal opinion in almost any area of our daily life. More specifically, in the field of entertainment through films and series, the rating system plays a particularly important role in the public's decision to choose between a movie or a series, while at the same time it is subconsciously influencing in advance the individual's attitude towards what he or she is about to watch. Therefore it is significant to realize the factors that influence people's opinion and judgement, and alongside to correlate their behaviour with the way they approach and interact with films and series. In this project we will research the IMDb ratings for TV Shows/Series and we will try to analyze the way in which those ratings are influenced by the number of seasons and episodes of each series.
 
 ----
 
@@ -22,7 +22,7 @@ In the modern digital era we live in, we are presented with the opportunity to b
 - Subsets of IMDb data can be accessed for personal/non-commercial purposes.
 - This project will use IMDb to make research about the interaction between the length of Tv-shows and their overall ratings.
 
----- 
+----
 
 ## Dataset list:
 - Data files for episodes: https://datasets.imdbws.com/title.episode.tsv.gz      
@@ -31,11 +31,39 @@ In the modern digital era we live in, we are presented with the opportunity to b
 
 ----
 
-## Method and results
-Here we should add: 
-First, introduce and motivate your chosen method, and explain how it contributes to solving the research question/business problem.
-Second, summarize your results concisely. Make use of subheaders where appropriate.
+# Research method
 
+## Data
+
+Firstly, we have downloaded the required data from the IMDb Developer website. For our project, we needed three datasets - episodes, ratings and titles.
+
+Datasets:
+- episodes - data on all episodes of all TV series - identifier for the series and episode
+- ratings - data on average ratings  and number of votes for all series
+- titles - data on title, start and end year for all series
+
+## Transformation
+
+As a next step, we have performed multiple transformations to reach our final dataset:
+- calculated the total number of episodes for each series
+- split the data into 2 datasets:
+  - long series (5+ seasons)
+  - short series (2-4 seasons)
+  Due to some inaccuracies with the data we have decided to exclude 1 season series.
+- filtered out the series with below 1000 votes
+- calculated the total running time of the series (in years)
+- performed necessary data cleaning tasks (removed duplicates and erroneous observations)
+- merged the data together to create 2 final datasets, for long and short series
+
+In the end, we were left with x observations for the long series dataset, and y for short series.
+
+## Analysis
+
+Next, we have performed a linear regression to analyze the data
+
+#Results
+
+(here we write about the results of our analysis, maybe insert some graphs, maybe give some summary statistics)
 
 ## Repository overview
 Structure and files of the repository:
@@ -83,17 +111,17 @@ git clone https://github.com/{your username}/team-project-team-7.git
 ```
 make
 ```
-4. "We should add our own steps here. I uploded this in the readme file to have a path to work." 
+4. "We should add our own steps here. I uploded this in the readme file to have a path to work."
 
-5. To clean the data of all raw and unnecessary data files created during the pipeline, run the following code in the command line / terminal: 
+5. To clean the data of all raw and unnecessary data files created during the pipeline, run the following code in the command line / terminal:
 ```
 make clean
 ```
 
-Note: when the command line/terminal is closed, the website will not be available anymore. 
+Note: when the command line/terminal is closed, the website will not be available anymore.
 
 ### Alternative route
-An alternative route to run the code would be: 
+An alternative route to run the code would be:
 - ../src/data-preparation -> add our files
 - ../src/data-preparation -> add our files
 - ../src/analysis -> add our files
@@ -110,11 +138,8 @@ These are the contributors of the project:
 - Flip Gootjes (f.gootjes@tilburguniversity.edu)
 - Aleksander Spisz (a.o.spisz@tilburguniversity.edu)
 - Chon Fai Wong (c.f.wong@tilburguniversity.edu)
-  
-  This project is a part of __"Data Preparation & Workflow Management"__ course at Tilburg University. 
+
+  This project is a part of __"Data Preparation & Workflow Management"__ course at Tilburg University.
 
 
----- 
-
-
-
+----
