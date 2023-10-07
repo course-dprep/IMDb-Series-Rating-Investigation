@@ -7,8 +7,10 @@
 ----
 
 
-# Research Motivation
-Why did we choose this topic? We should define clearly the question of the project and describe what are we going to do. Some information is already written in the next chapter.
+# Research Question
+How the IMDb ratings of the viewers for TV Shows/Series are affected by their length in seasons and episodes? 
+
+---- 
 
 ## Research Motivation & Project Description
 Welcome to our GitHub repository!
@@ -82,9 +84,19 @@ In the end, we were left with x observations for the long series dataset, and y 
 
 Next, we have performed a linear regression to analyze the data
 
-#Results
+## Results
+### Output of Linear Regression
+Call:
+lm(formula = averageRating ~ num_episodes + numVotes + numVotes * long.x, data = merged_episodes)
+![Formula](<Episodes_lm call.png>)
+
+### Plot Screenshot 
+X = num_episodes, Y= averageRating
+![Plot](<Episodes_lm plot.png>)
 
 (here we write about the results of our analysis, maybe insert some graphs, maybe give some summary statistics)
+
+----
 
 ## Repository overview
 Structure and files of the repository:
@@ -141,17 +153,20 @@ make clean
 
 Note: when the command line/terminal is closed, the website will not be available anymore.
 
+----
+
 ### Alternative route
 An alternative route to run the code would be:
 - ../src/data-preparation -> add our files
 - ../src/data-preparation -> add our files
 - ../src/analysis -> add our files
 
+----
 
 ## More resources
 Point interested users to any related literature and/or documentation.
-### Screenshots/graphs etc.
-Here maybe we can upload some useful and interesting graphs, screenshots as a result of our research (e.g. the output of the linear regression).
+
+---- 
 
 ## About
 These are the contributors of the project:
