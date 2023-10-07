@@ -52,13 +52,14 @@ episodes <- episodes %>%
 
 
 # Change necessary data types of variables: 
-episodes <- episodes %>% mutate(num_seasons = as.integer(num_seasons))
+episodes <- episodes %>% 
+  mutate(num_seasons = as.integer(num_seasons))
 
 
 # Create a dummy for long series
 # Assuming you have a data frame named 'IMDb_data' with a 'num_seasons' column
 # Create a 'long' column based on 'num_seasons'
-episodes$long <- ifelse(episodes$num_seasons >= 5, 1, 0)
+episodes <- episodes %>% mutate(long = ifelse(episodes$num_seasons >= 5, 1, 0)) 
 
 
 # Filter the number of seasons to separate long & short series: 
@@ -73,6 +74,9 @@ long_series <- long_series %>% filter(num_episodes >= num_seasons)
 short_series <- short_series %>% filter(num_episodes >= num_seasons)
 episodes <- episodes %>% filter(num_episodes >= num_seasons)
 
+# Rename dataset episodes:
+episodes_df <- episodes
+
 # Select specific column from the dataset of names: 
 names <- names %>%
   select(tconst, originalTitle, startYear, endYear)
@@ -80,26 +84,29 @@ names <- names %>%
 # Store clean datasets for long-short series/episodes & names: 
 write_csv(long_series, "long_series.csv")
 write_csv(short_series, "short_series.csv")
-write_csv(names, "names_series.csv") 
+write_csv(names, "names_series.csv")
+write_csv(episodes_df, "episodes.csv")
 
 
 ## MERGING AND FILTERING MERGED DATASETS ##
 
+# Import data:
 long_series <- read_csv("long_series.csv")
 short_series <- read_csv("short_series.csv")
 names <- read_csv("names_series.csv")
+episodes_df <- read_csv("episodes.csv")
 
 
 # Merging rating dataset with long & short season series datasets:
 long_series_rating <- left_join(long_series, rating, by = 'tconst')
 short_series_rating <- left_join(short_series, rating, by = 'tconst')
-episodes_rating <- left_join(episodes, rating, by = 'tconst')
+episodes_rating <- left_join(episodes_df, rating, by = 'tconst')
 
 
 # Merging long & short seasons series with names:
 long_series <- left_join(long_series, names, by = 'tconst')
 short_series <- left_join(short_series, names, by = 'tconst')
-episodes_series <- left_join(episodes, names, by = 'tconst')
+episodes_series <- left_join(episodes_df, names, by = 'tconst')
 
 
 # Merging long & short merged datasets with rating:
@@ -137,17 +144,23 @@ merged_episodes <- merged_episodes %>% filter(num_seasons < 99)
 # Store merged datasets for long & short season series: 
 write_csv(merged_long_series, "merged_long_series.csv")
 write_csv(merged_short_series, "merged_short_series.csv")
+write_csv(merged_episodes, "merged_episodes.csv")
 
 
-## LINEAR REGRESSION ##
+## LINEAR REGRESSION/PLOT TABLE ##
+
+# Import data:
+merged_long_series <- read_csv("merged_long_series.csv")
+merged_short_series <- read_csv("merged_short_series.csv")
+merged_episodes <- read_csv("merged_episodes.csv")
 
 # Linear regression/DV: averageRating, IVs: num_episodes, numVotes, Interaction: numVotes*long.x 
 episodes_lm <- lm(averageRating ~ num_episodes + numVotes + numVotes*long.x, data = merged_episodes)
 summary(episodes_lm)
 
-
+# Plot 
 # Add a regression line to the plot with geom_smooth()
-ggplot(data = episodes_lm, aes(x = num_episodes, y = averageRating)) +
+plot <- ggplot(data = episodes_lm, aes(x = num_episodes, y = averageRating)) +
   
   # Add points to the plot with geom_point()
   geom_point() +
@@ -156,14 +169,8 @@ ggplot(data = episodes_lm, aes(x = num_episodes, y = averageRating)) +
   # Add a regression line to the plot with geom_smooth()
   geom_smooth(method = "lm", se = FALSE)
 
+ggsave("plot.pdf", plot, width = 8, height = 6)
 
-# Linear regression/DV: averageRating, IVs: num_episodes, numVotes
-long_lm <- lm(averageRating ~ num_episodes + numVotes, data = long_series_rating)
-summary(long_lm)
 
-long_lm2 <- lm(averageRating ~ num_episodes + num_seasons + numVotes, data = long_series_rating)
-summary(long_lm2)
 
-short_lm <- lm(averageRating ~ num_episodes + numVotes, data = merged_short_series)
-summary(short_lm)
 
