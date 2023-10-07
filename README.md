@@ -88,11 +88,11 @@ Next, we have performed a linear regression to analyze the data
 ### Output of Linear Regression
 Call:
 lm(formula = averageRating ~ num_episodes + numVotes + numVotes * long.x, data = merged_episodes)
-![Alt text](<Episodes_lm call.png>)
+![Formula](<Episodes_lm call.png>)
 
 ### Plot Screenshot 
 X = num_episodes, Y= averageRating
-![Alt text](<Episodes_lm plot.png>)
+![Plot](<Episodes_lm plot.png>)
 
 (here we write about the results of our analysis, maybe insert some graphs, maybe give some summary statistics)
 
