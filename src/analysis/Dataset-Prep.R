@@ -54,9 +54,10 @@ episodes <- episodes %>%
 # Change necessary data types of variables: 
 episodes <- episodes %>% mutate(num_seasons = as.integer(num_seasons))
 
+
 # Create a dummy for long series
-# Assuming you have a data frame named 'imdb_data' with a 'numSeasons' column
-# Create a 'long' column based on 'numSeasons'
+# Assuming you have a data frame named 'IMDb_data' with a 'num_seasons' column
+# Create a 'long' column based on 'num_seasons'
 episodes$long <- ifelse(episodes$num_seasons >= 5, 1, 0)
 
 
@@ -94,20 +95,24 @@ long_series_rating <- left_join(long_series, rating, by = 'tconst')
 short_series_rating <- left_join(short_series, rating, by = 'tconst')
 episodes_rating <- left_join(episodes, rating, by = 'tconst')
 
+
 # Merging long & short seasons series with names:
 long_series <- left_join(long_series, names, by = 'tconst')
 short_series <- left_join(short_series, names, by = 'tconst')
 episodes_series <- left_join(episodes, names, by = 'tconst')
+
 
 # Merging long & short merged datasets with rating:
 merged_long_series<- left_join(long_series, long_series_rating, by = c('tconst', 'num_seasons', 'num_episodes'))
 merged_short_series <- left_join(short_series, short_series_rating, by = c('tconst', 'num_seasons', 'num_episodes'))
 merged_episodes <- left_join(episodes_series, episodes_rating, by = c('tconst', 'num_seasons', 'num_episodes'))
 
+
 # Manage and remove duplicates: 
 merged_long_series <- merged_long_series %>% filter(!duplicated(merged_long_series))
 merged_short_series <- merged_short_series %>% filter(!duplicated(merged_short_series))
 merged_episodes <- merged_episodes %>% filter(!duplicated(merged_episodes))
+
 
 # Filtering for number of votes: 
 merged_long_series <- merged_long_series %>% 
@@ -116,6 +121,7 @@ merged_short_series <- merged_short_series %>%
   filter(numVotes >= 1000)
 merged_episodes <- merged_episodes %>%
   filter(numVotes >= 1000)
+
 
 # Replace "\N" with "Ongoing" to make the datasets more precise & correct: 
 merged_long_series <- merged_long_series %>%
@@ -126,15 +132,20 @@ merged_short_series <- merged_short_series %>%
 
 # Remove outliers from merged_long_series dataset: 
 merged_long_series <- merged_long_series %>% filter(num_seasons < 99)
-merged_episodes <- merged_episodes%>% filter(num_seasons < 99)
+merged_episodes <- merged_episodes %>% filter(num_seasons < 99)
 
 # Store merged datasets for long & short season series: 
 write_csv(merged_long_series, "merged_long_series.csv")
 write_csv(merged_short_series, "merged_short_series.csv")
 
+
 ## LINEAR REGRESSION ##
-long_lm <- lm(averageRating ~ num_episodes + numVotes, data = long_series_rating)
-summary(long_lm)
+
+# Linear regression/DV: averageRating, IVs: num_episodes, numVotes, Interaction: numVotes*long.x 
+episodes_lm <- lm(averageRating ~ num_episodes + numVotes + numVotes*long.x, data = merged_episodes)
+summary(episodes_lm)
+
+
 # Add a regression line to the plot with geom_smooth()
 ggplot(data = episodes_lm, aes(x = num_episodes, y = averageRating)) +
   
@@ -145,12 +156,14 @@ ggplot(data = episodes_lm, aes(x = num_episodes, y = averageRating)) +
   # Add a regression line to the plot with geom_smooth()
   geom_smooth(method = "lm", se = FALSE)
 
+
+# Linear regression/DV: averageRating, IVs: num_episodes, numVotes
+long_lm <- lm(averageRating ~ num_episodes + numVotes, data = long_series_rating)
+summary(long_lm)
+
 long_lm2 <- lm(averageRating ~ num_episodes + num_seasons + numVotes, data = long_series_rating)
 summary(long_lm2)
 
 short_lm <- lm(averageRating ~ num_episodes + numVotes, data = merged_short_series)
 summary(short_lm)
 
-merged_episodes <- na.omit(merged_episodes)
-episodes_lm <- lm(averageRating ~ num_episodes + numVotes + numVotes*long.x, data = merged_episodes)
-summary(episodes_lm)
