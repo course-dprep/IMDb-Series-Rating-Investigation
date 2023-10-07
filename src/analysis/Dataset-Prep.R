@@ -79,7 +79,7 @@ episodes_df <- episodes
 
 # Select specific column from the dataset of names: 
 names <- names %>%
-  select(tconst, originalTitle, startYear, endYear)
+  dplyr::select(tconst, originalTitle, startYear, endYear)
 
 # Store clean datasets for long-short series/episodes & names: 
 write_csv(long_series, "long_series.csv")
