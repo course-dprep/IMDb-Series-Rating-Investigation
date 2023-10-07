@@ -42,6 +42,27 @@ Datasets:
 - ratings - data on average ratings  and number of votes for all series
 - titles - data on title, start and end year for all series
 
+## Variables
+
+All three datasets contain one common variable: tconst, which is the unique identifier for different series and movies.
+
+
+| Dataset |   Variable   |                                  Definition                                                 |
+|:--------|:-------------|:--------------------------------------------------                                          |
+|rating   |averageRating |weighted average of all the individual user ratings                                          |
+|rating   |numVotes      |number of votes the title has received                                                       |
+|episodes |parentTconst  |alphanumeric identifier of the parent TV Series                                              |
+|episodes |seasonNumber  |season number the episode belongs to                                                         |
+|episodes |episodeNumber |episode number of the tconst in the TV series                                                | 
+|names    |titleType     |the type/format of the title (e.g. movie, series)                                            |
+|names    |primaryTitle  |the title used by the filmmakers on promotional materials at the point of release            |
+|names    |originalTitle |original title, in the original language                                                     |
+|names    |isAdult       |0: non-adult title; 1: adult title                                                           |
+|names    |startYear     |represents the release year of a title. In the case of TV Series, it is the series start year|
+|names    |endYear       |TV Series end year. ‘\N’ for all other title types                                           |
+|names    |runtimeMinutes|primary runtime of the title, in minutes                                                     |
+|names    |genres        |includes up to three genres associated with the title                                        |
+
 ## Transformation
 
 As a next step, we have performed multiple transformations to reach our final dataset:
