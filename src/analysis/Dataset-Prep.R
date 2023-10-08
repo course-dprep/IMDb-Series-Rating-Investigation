@@ -13,23 +13,40 @@ library(dplyr)
 library(data.table)
 library(ggplot2)
 
-# Download relevant datasets: 
-urls = c("https://datasets.imdbws.com/title.episode.tsv.gz", "https://datasets.imdbws.com/title.ratings.tsv.gz", "https://datasets.imdbws.com/title.basics.tsv.gz")
+# Check and set working directory
+getwd()
+setwd("C:/team-project-team-7")
 
-# Define the corresponding filenames: 
-filenames = c("title.episode.tsv.gz",
-              "title.ratings.tsv.gz",
-              "title.basics.tsv.gz")
+# Set up paths for downloading and loading datasets
+# Set the base directory
+base_dir <- "C:/team-project-team-7"
 
-# Loop through the URLs and filenames: 
+# Define the directories for downloading and loading
+download_dir <- file.path(base_dir, "gen/data-preparation/temp")
+save_dir <- file.path(base_dir, "gen/data-preparation/input")
+
+# Download relevant datasets to the download directory
+urls <- c(
+  "https://datasets.imdbws.com/title.episode.tsv.gz",
+  "https://datasets.imdbws.com/title.ratings.tsv.gz",
+  "https://datasets.imdbws.com/title.basics.tsv.gz"
+)
+
+filenames <- c(
+  "title.episode.tsv.gz",
+  "title.ratings.tsv.gz",
+  "title.basics.tsv.gz"
+)
+
 for (i in 1:length(urls)) {
-  download.file(urls[i], destfile = filenames[i],mode="wb")
+  download.file(urls[i], destfile = file.path(download_dir, filenames[i]), mode = "wb")
 }
+# Load all three datasets from the download directory
+library(readr)
 
-# Load all three datasets: 
-episodes <- read_tsv('title.episode.tsv.gz')
-rating <- read_tsv('title.ratings.tsv.gz')
-names <- read_tsv('title.basics.tsv.gz')
+episodes <- read_tsv(file.path(download_dir, "title.episode.tsv.gz"))
+rating <- read_tsv(file.path(download_dir, "title.ratings.tsv.gz"))
+names <- read_tsv(file.path(download_dir, "title.basics.tsv.gz"))
 
 
 ## SERIES/EPISODES & NAMES DATASET PREPARATION AND CLEANING ##
@@ -57,9 +74,9 @@ episodes <- episodes %>%
 
 
 # Create a dummy for long series
-# Assuming you have a data frame named 'IMDb_data' with a 'num_seasons' column
 # Create a 'long' column based on 'num_seasons'
 episodes <- episodes %>% mutate(long = ifelse(episodes$num_seasons >= 5, 1, 0)) 
+
 
 
 # Filter the number of seasons to separate long & short series: 
@@ -82,10 +99,10 @@ names <- names %>%
   dplyr::select(tconst, originalTitle, startYear, endYear)
 
 # Store clean datasets for long-short series/episodes & names: 
-write_csv(long_series, "long_series.csv")
-write_csv(short_series, "short_series.csv")
-write_csv(names, "names_series.csv")
-write_csv(episodes_df, "episodes.csv")
+write_csv(long_series, file.path(save_dir, "long_series.csv"))
+write_csv(short_series, file.path(save_dir, "short_series.csv"))
+write_csv(names, file.path(save_dir, "names_series.csv"))
+write_csv(episodes_df, file.path(save_dir, "episodes.csv"))
 
 
 ## MERGING AND FILTERING MERGED DATASETS ##
