@@ -8,9 +8,9 @@
 
 
 # Research Question
-How the IMDb ratings of the viewers for TV Shows/Series are affected by their length in seasons and episodes? 
+How the IMDb ratings of the viewers for TV Shows/Series are affected by their length in seasons and episodes?
 
----- 
+----
 
 ## Research Motivation & Project Description
 Welcome to our GitHub repository!
@@ -55,7 +55,7 @@ All three datasets contain one common variable: tconst, which is the unique iden
 |rating   |numVotes      |number of votes the title has received                                                       |
 |episodes |parentTconst  |alphanumeric identifier of the parent TV Series                                              |
 |episodes |seasonNumber  |season number the episode belongs to                                                         |
-|episodes |episodeNumber |episode number of the tconst in the TV series                                                | 
+|episodes |episodeNumber |episode number of the tconst in the TV series                                                |
 |names    |titleType     |the type/format of the title (e.g. movie, series)                                            |
 |names    |primaryTitle  |the title used by the filmmakers on promotional materials at the point of release            |
 |names    |originalTitle |original title, in the original language                                                     |
@@ -82,9 +82,11 @@ In the end, we were left with x observations for the long series dataset, and y 
 
 ## Analysis
 
-Next, we have performed a linear regression to analyze the data
+Next, we have performed a linear regression to analyze the data. As a dependent variable we have taken the average rating for each series.
+We have included 3 independent variables to try to find an answer to our research question.
 
-## Results
+# Results
+
 ### Output of Linear Regression
 Call:
 lm(formula = averageRating ~ num_episodes + numVotes + numVotes * long.x, data = merged_episodes)
@@ -92,7 +94,7 @@ lm(formula = averageRating ~ num_episodes + numVotes + numVotes * long.x, data =
 <img width="370" alt="Episodes_lm call" src="https://github.com/course-dprep/team-project-team-7/assets/143189371/fc5a1153-a814-490f-8d31-26b80e9c3e4c">
 
 
-### Plot Screenshot 
+### Plot Screenshot
 X = num_episodes, Y= averageRating
 
 <img width="960" alt="Episodes_lm plot" src="https://github.com/course-dprep/team-project-team-7/assets/143189371/86816148-42d5-4f8f-bcda-cfb77e56d66b">
@@ -169,7 +171,7 @@ An alternative route to run the code would be:
 ## More resources
 Point interested users to any related literature and/or documentation.
 
----- 
+----
 
 ## About
 These are the contributors of the project:
