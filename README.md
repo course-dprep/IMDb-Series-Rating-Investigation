@@ -60,11 +60,7 @@ All three datasets contain one common variable: tconst, which is the unique iden
 |rating   |numVotes      |number of votes the title has received                                                       |
 |episodes |parentTconst  |alphanumeric identifier of the parent TV Series                                              |
 |episodes |seasonNumber  |season number the episode belongs to                                                         |
-<<<<<<< HEAD
-|episodes |episodeNumber |episode number of the tconst in the TV series                                                | 
-=======
 |episodes |episodeNumber |episode number of the tconst in the TV series                                                |
->>>>>>> 76a96c34c74911502dab2c0817b7108d6160575a
 |names    |titleType     |the type/format of the title (e.g. movie, series)                                            |
 |names    |primaryTitle  |the title used by the filmmakers on promotional materials at the point of release            |
 |names    |originalTitle |original title, in the original language                                                     |
