@@ -228,4 +228,6 @@ plot <- ggplot(data = episodes_lm, aes(x = num_episodes, y = averageRating)) +
 ggsave("plot.pdf", plot, width = 8, height = 6)
 ```
 
+## We should put the plot graph here
 
+## Conclusion
