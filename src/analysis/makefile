@@ -9,10 +9,8 @@ Cleaning: Downloading
 Downloading: Download.R
 	Rscript Download.R
 
-
 clean:
 	R -e "unlink('*.tsv')"
 	R -e "unlink('*.csv')"
 	R -e "unlink('*.gz')"
-	R -e "unlink('*.pdf')"
 	

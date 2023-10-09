@@ -6,6 +6,7 @@ date: "2023-10-08"
 output:
   html_document:
     df_print: paged
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -13,7 +14,8 @@ knitr::opts_chunk$set(
 	echo = TRUE,
 	message = FALSE,
 	warning = FALSE,
-	fig.cap = TRUE
+	fig.cap = TRUE,
+	eval= FALSE
 )
 ```
 
@@ -57,42 +59,42 @@ names <- read_tsv('title.basics.tsv.gz')
 In this project we will research the IMDb ratings for TV Shows/Series and we will try to analyze the way in which those ratings are influenced by the number of seasons and episodes of each series.
 
 
-## SERIES/EPISODES & NAMES DATASET PREPARATION AND CLEANING
+## Series/Episodes & Names Dataset preparation and cleaning
 
-# Count total number of episodes and creating new column
+Count total number of episodes and creating new column
 ```{r}
 episodes <- episodes %>% 
   group_by(parentTconst) %>% 
   mutate(total_episodes=n())
 ```
 
-# Grouping by parentTconst & summarizing number of seasons/episodes:
+Grouping by parentTconst & summarizing number of seasons/episodes:
 ```{r}
 episodes <- episodes %>% 
   group_by(parentTconst) %>% 
   summarise(num_seasons = max(seasonNumber), num_episodes = max(total_episodes))
 ```
 
-# Rename the parentTconst to tconst:
+Rename the parentTconst to tconst:
 ```{r}
 episodes <- episodes %>% 
   rename(tconst = parentTconst)
 ```
 
-# Change necessary data types of variables: 
+Change necessary data types of variables: 
 ```{r}
 episodes <- episodes %>% 
   mutate(num_seasons = as.integer(num_seasons))
 ```
 
-# Create a dummy for long series
+Create a dummy for long series
 ```{r}
 # Assuming you have a data frame named 'IMDb_data' with a 'num_seasons' column
 # Create a 'long' column based on 'num_seasons'
 episodes <- episodes %>% mutate(long = ifelse(episodes$num_seasons >= 5, 1, 0))
 ```
 
-# Filter the number of seasons to separate long & short series: 
+Filter the number of seasons to separate long & short series: 
 ```{r}
 long_series <- episodes %>%
   filter(num_seasons >= 5)
@@ -100,25 +102,25 @@ short_series <- episodes %>%
   filter(num_seasons > 1 & num_seasons < 5)
 ```
 
-# Remove series with unsubstantiated number of episodes compared to seasons:
+Remove series with unsubstantiated number of episodes compared to seasons:
 ```{r}
 long_series <- long_series %>% filter(num_episodes >= num_seasons)
 short_series <- short_series %>% filter(num_episodes >= num_seasons)
 episodes <- episodes %>% filter(num_episodes >= num_seasons)
 ```
 
-# Rename dataset episodes:
+Rename dataset episodes:
 ```{r}
 episodes_df <- episodes
 ```
 
-# Select specific column from the dataset of names: 
+Select specific column from the dataset of names: 
 ```{r}
 names <- names %>%
   dplyr::select(tconst, originalTitle, startYear, endYear)
 ```
 
-# Store clean datasets for long-short series/episodes & names: 
+Store clean datasets for long-short series/episodes & names: 
 ```{r}
 write_csv(long_series, "long_series.csv")
 write_csv(short_series, "short_series.csv")
@@ -126,9 +128,9 @@ write_csv(names, "names_series.csv")
 write_csv(episodes_df, "episodes.csv")
 ```
 
-## MERGING AND FILTERING MERGED DATASETS ##
+## Merging and Filtering merged datasets
 
-# Import data:
+Import data:
 ```{r}
 long_series <- read_csv("long_series.csv")
 short_series <- read_csv("short_series.csv")
@@ -136,35 +138,35 @@ names <- read_csv("names_series.csv")
 episodes_df <- read_csv("episodes.csv")
 ```
 
-# Merging rating dataset with long & short season series datasets:
+Merging rating dataset with long & short season series datasets:
 ```{r}
 long_series_rating <- left_join(long_series, rating, by = 'tconst')
 short_series_rating <- left_join(short_series, rating, by = 'tconst')
 episodes_rating <- left_join(episodes_df, rating, by = 'tconst')
 ```
 
-# Merging long & short seasons series with names:
+Merging long & short seasons series with names:
 ```{r}
 long_series <- left_join(long_series, names, by = 'tconst')
 short_series <- left_join(short_series, names, by = 'tconst')
 episodes_series <- left_join(episodes_df, names, by = 'tconst')
 ```
 
-# Merging long & short merged datasets with rating:
+Merging long & short merged datasets with rating:
 ```{r}
 merged_long_series<- left_join(long_series, long_series_rating, by = c('tconst', 'num_seasons', 'num_episodes'))
 merged_short_series <- left_join(short_series, short_series_rating, by = c('tconst', 'num_seasons', 'num_episodes'))
 merged_episodes <- left_join(episodes_series, episodes_rating, by = c('tconst', 'num_seasons', 'num_episodes'))
 ```
 
-# Manage and remove duplicates: 
+Manage and remove duplicates: 
 ```{r}
 merged_long_series <- merged_long_series %>% filter(!duplicated(merged_long_series))
 merged_short_series <- merged_short_series %>% filter(!duplicated(merged_short_series))
 merged_episodes <- merged_episodes %>% filter(!duplicated(merged_episodes))
 ```
 
-# Filtering for number of votes: 
+Filtering for number of votes: 
 ```{r}
 merged_long_series <- merged_long_series %>% 
   filter(numVotes >= 1000)
@@ -174,7 +176,7 @@ merged_episodes <- merged_episodes %>%
   filter(numVotes >= 1000)
 ```
 
-# Replace "\N" with "Ongoing" to make the datasets more precise & correct: 
+Replace NA value with "Ongoing" to make the datasets more precise & correct: 
 ```{r}
 merged_long_series <- merged_long_series %>%
   mutate(endYear = ifelse(endYear == "\\N", "Ongoing", endYear))
@@ -182,29 +184,29 @@ merged_short_series <- merged_short_series %>%
   mutate(endYear = ifelse(endYear == "\\N", "Ongoing", endYear))
 ```
 
-# Remove outliers from merged_long_series dataset: 
+Remove outliers from merged_long_series dataset: 
 ```{r}
 merged_long_series <- merged_long_series %>% filter(num_seasons < 99)
 merged_episodes <- merged_episodes %>% filter(num_seasons < 99)
 ```
 
-# Store merged datasets for long & short season series: 
+Store merged datasets for long & short season series: 
 ```{r}
 write_csv(merged_long_series, "merged_long_series.csv")
 write_csv(merged_short_series, "merged_short_series.csv")
 write_csv(merged_episodes, "merged_episodes.csv")
 ```
 
-## LINEAR REGRESSION/PLOT TABLE ##
+## Linear Regression
 
-# Import data:
+Import data:
 ```{r}
 merged_long_series <- read_csv("merged_long_series.csv")
 merged_short_series <- read_csv("merged_short_series.csv")
 merged_episodes <- read_csv("merged_episodes.csv")
 ```
 
-# Linear regression/DV: averageRating, IVs: num_episodes, numVotes, Interaction: numVotes*long.x 
+Linear regression/DV: averageRating, IVs: num_episodes, numVotes, Interaction: numVotes*long.x 
 ```{r}
 episodes_lm <- lm(averageRating ~ num_episodes + numVotes + numVotes*long.x, data = merged_episodes)
 summary(episodes_lm)
@@ -212,7 +214,7 @@ summary(episodes_lm)
 
 ## Plot 
 
-# Add a regression line to the plot with geom_smooth()
+Add a regression line to the plot with geom_smooth()
 ```{r}
 plot <- ggplot(data = episodes_lm, aes(x = num_episodes, y = averageRating)) +
   
@@ -226,4 +228,6 @@ plot <- ggplot(data = episodes_lm, aes(x = num_episodes, y = averageRating)) +
 ggsave("plot.pdf", plot, width = 8, height = 6)
 ```
 
+## We should put the plot graph here
 
+## Conclusion
