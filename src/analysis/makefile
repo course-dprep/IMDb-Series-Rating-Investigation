@@ -1,17 +1,15 @@
-all: plot.pdf
+all: Merging
 
-title.basics.tsv.gz title.episode.tsv.gz title.ratings.tsv.gz: Download.R
-	Rscript Download.R 
-	
-long_series.csv short_series.csv names_series.csv episodes.csv: title.basics.tsv.gz title.episode.tsv.gz title.ratings.tsv.gz
-	Rscript Cleaning.R
-	
-merged_long_series.csv merged_short_series.csv merged_episodes.csv: long_series.csv short_series.csv names_series.csv episodes.csv
+Merging: Cleaning
 	Rscript Merging.R
-	
-plot.pdf: merged_long_series.csv merged_short_series.csv merged_episodes.csv
-	Rscript Plot.R
-	
+
+Cleaning: Downloading
+	Rscript Cleaning.R
+
+Downloading: Download.R
+	Rscript Download.R
+
+
 clean:
 	R -e "unlink('*.tsv')"
 	R -e "unlink('*.csv')"

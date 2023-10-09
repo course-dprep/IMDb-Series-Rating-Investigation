@@ -13,13 +13,6 @@ library(dplyr)
 library(data.table)
 library(ggplot2)
 
-# Check and set working directory
-getwd()
-setwd("C:/team-project-team-7")
-
-# Set up paths for downloading and loading datasets
-# Set the base directory
-base_dir <- "C:/team-project-team-7"
 
 # Define the directories for downloading and loading
 download_dir <- file.path(base_dir, "gen/data-preparation/temp")
