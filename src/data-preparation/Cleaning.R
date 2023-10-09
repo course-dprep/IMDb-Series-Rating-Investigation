@@ -3,12 +3,16 @@ library(tidyverse)
 library(dplyr)
 library(data.table)
 
+# Define directories for downloading and loading: 
+download_dir <- file.path("../../IMDb-Datasets")
+save_dir <- file.path("../../gen/temp")
+
 ## SERIES/EPISODES & NAMES DATASET PREPARATION AND CLEANING ##
 
 # Load all three datasets: 
-episodes <- read_tsv('title.episode.tsv.gz')
-rating <- read_tsv('title.ratings.tsv.gz')
-names <- read_tsv('title.basics.tsv.gz')
+episodes <- read_tsv(file.path(download_dir, "title.episode.tsv.gz"))
+rating <- read_tsv(file.path(download_dir, "title.ratings.tsv.gz"))
+names <- read_tsv(file.path(download_dir, "title.basics.tsv.gz"))
 
 
 # Count total number of episodes and creating new column: 
@@ -56,8 +60,10 @@ names <- names %>%
   dplyr::select(tconst, originalTitle, startYear, endYear)
 
 # Store clean datasets for long-short series/episodes & names: 
-write_csv(long_series, "long_series.csv")
-write_csv(short_series, "short_series.csv")
-write_csv(names, "names_series.csv")
-write_csv(episodes, "episodes.csv")
+write_csv(long_series, file.path(save_dir, "long_series.csv"))
+write_csv(short_series, file.path(save_dir, "short_series.csv"))
+write_csv(names, file.path(save_dir, "names_series.csv"))
+write_csv(episodes, file.path(save_dir, "episodes.csv"))
+
+
 
