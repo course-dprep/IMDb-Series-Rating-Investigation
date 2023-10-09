@@ -1,16 +1,9 @@
-all: Merging
+OUTPUT = ../../gen/output
+TEMP = ../../gen/temp
 
-Merging: Cleaning
-	Rscript Merging.R
+all: $(OUTPUT)/plot.pdf 
 
-Cleaning: Downloading
-	Rscript Cleaning.R
+$(OUTPUT)/plot.pdf: $(TEMP)/merged_episodes.csv $(TEMP)/merged_short_series.csv $(TEMP)/merged_long_series.csv
+	R -e "dir.create('../../gen/output', recursive = TRUE)"
+	Rscript Plot.R
 
-Downloading: Download.R
-	Rscript Download.R
-
-clean:
-	R -e "unlink('*.tsv')"
-	R -e "unlink('*.csv')"
-	R -e "unlink('*.gz')"
-	
