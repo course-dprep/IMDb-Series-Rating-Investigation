@@ -1,45 +1,16 @@
-<<<<<<< HEAD
-# Makefile
-all: merge
+DATA = ../../IMDb-Datasets
+TEMP = ../../gen/temp 
 
-# Define targets and dependencies
-download: download_data.R
-	Rscript download_data.R
+all: $(TEMP)/merged_long_series.csv $(TEMP)/merged_short_series.csv $(TEMP)/merged_episodes.csv 
 
-load: load_data.R download
-	Rscript load_data.R
+$(DATA)/title.basics.tsv.gz $(DATA)/title.episode.tsv.gz $(DATA)/title.ratings.tsv.gz: Download.R
+	R -e "dir.create('../../IMDb-Datasets', recursive = TRUE)"
+	Rscript Download.R
 
-merge: merge_data.R load
-	Rscript merge_data.R
-
-
-# Clean up intermediate files
-clean:
-	rm -f *.tsv
-	rm -f *.csv
-	rm -f *.gz
-
-# Specify phony targets
-.PHONY: download load filter clean
-=======
-all: plot.pdf
-
-title.basics.tsv.gz title.episode.tsv.gz title.ratings.tsv.gz: Download.R
-	Rscript Download.R 
-	
-long_series.csv short_series.csv names_series.csv episodes.csv: title.basics.tsv.gz title.episode.tsv.gz title.ratings.tsv.gz
+$(TEMP)/long_series.csv $(TEMP)/short_series.csv $(TEMP)/names_series.csv $(TEMP)/episodes.csv: $(DATA)/title.ratings.tsv.gz $(DATA)/title.episode.tsv.gz $(DATA)/title.basics.tsv.gz
+	R -e "dir.create('../../gen/temp', recursive = TRUE)"
 	Rscript Cleaning.R
 	
-merged_long_series.csv merged_short_series.csv merged_episodes.csv: long_series.csv short_series.csv names_series.csv episodes.csv
+$(TEMP)/merged_episodes.csv $(TEMP)/merged_short_series.csv $(TEMP)/merged_long_series.csv: $(TEMP)/long_series.csv $(TEMP)/short_series.csv $(TEMP)/names_series.csv $(TEMP)/episodes.csv
 	Rscript Merging.R
 	
-plot.pdf: merged_long_series.csv merged_short_series.csv merged_episodes.csv
-	Rscript Plot.R
-	
-clean:
-	R -e "unlink('*.tsv')"
-	R -e "unlink('*.csv')"
-	R -e "unlink('*.gz')"
-	R -e "unlink('*.pdf')"
-	
->>>>>>> 76a96c34c74911502dab2c0817b7108d6160575a
