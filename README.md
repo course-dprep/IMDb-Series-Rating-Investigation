@@ -7,8 +7,15 @@
 ----
 
 
+<<<<<<< HEAD
 # Research Motivation
 Why did we choose this topic? We should define clearly the question of the project and describe what are we going to do. Some information is already written in the next chapter.
+=======
+# Research Question
+How the IMDb ratings of the viewers for TV Shows/Series are affected by their length in seasons and episodes?
+
+----
+>>>>>>> 76a96c34c74911502dab2c0817b7108d6160575a
 
 ## Research Motivation & Project Description
 Welcome to our GitHub repository!
@@ -53,7 +60,11 @@ All three datasets contain one common variable: tconst, which is the unique iden
 |rating   |numVotes      |number of votes the title has received                                                       |
 |episodes |parentTconst  |alphanumeric identifier of the parent TV Series                                              |
 |episodes |seasonNumber  |season number the episode belongs to                                                         |
+<<<<<<< HEAD
 |episodes |episodeNumber |episode number of the tconst in the TV series                                                | 
+=======
+|episodes |episodeNumber |episode number of the tconst in the TV series                                                |
+>>>>>>> 76a96c34c74911502dab2c0817b7108d6160575a
 |names    |titleType     |the type/format of the title (e.g. movie, series)                                            |
 |names    |primaryTitle  |the title used by the filmmakers on promotional materials at the point of release            |
 |names    |originalTitle |original title, in the original language                                                     |
@@ -80,12 +91,36 @@ In the end, we were left with x observations for the long series dataset, and y 
 
 ## Analysis
 
+<<<<<<< HEAD
 Next, we have performed a linear regression to analyze the data
 
 #Results
 
 (here we write about the results of our analysis, maybe insert some graphs, maybe give some summary statistics)
 
+=======
+Next, we have performed a linear regression to analyze the data. As a dependent variable we have taken the average rating for each series.
+We have included 3 independent variables to try to find an answer to our research question.
+
+# Results
+
+### Output of Linear Regression
+Call:
+lm(formula = averageRating ~ num_episodes + numVotes + numVotes * long.x, data = merged_episodes)
+
+<img width="370" alt="Episodes_lm call" src="https://github.com/course-dprep/team-project-team-7/assets/143189371/fc5a1153-a814-490f-8d31-26b80e9c3e4c">
+
+
+### Plot Screenshot
+X = num_episodes, Y= averageRating
+
+<img width="960" alt="Episodes_lm plot" src="https://github.com/course-dprep/team-project-team-7/assets/143189371/86816148-42d5-4f8f-bcda-cfb77e56d66b">
+
+(here we write about the results of our analysis, maybe insert some graphs, maybe give some summary statistics)
+
+----
+
+>>>>>>> 76a96c34c74911502dab2c0817b7108d6160575a
 ## Repository overview
 Structure and files of the repository:
 
@@ -141,17 +176,31 @@ make clean
 
 Note: when the command line/terminal is closed, the website will not be available anymore.
 
+<<<<<<< HEAD
+=======
+----
+
+>>>>>>> 76a96c34c74911502dab2c0817b7108d6160575a
 ### Alternative route
 An alternative route to run the code would be:
 - ../src/data-preparation -> add our files
 - ../src/data-preparation -> add our files
 - ../src/analysis -> add our files
 
+<<<<<<< HEAD
 
 ## More resources
 Point interested users to any related literature and/or documentation.
 ### Screenshots/graphs etc.
 Here maybe we can upload some useful and interesting graphs, screenshots as a result of our research (e.g. the output of the linear regression).
+=======
+----
+
+## More resources
+Point interested users to any related literature and/or documentation.
+
+----
+>>>>>>> 76a96c34c74911502dab2c0817b7108d6160575a
 
 ## About
 These are the contributors of the project:
