@@ -3,14 +3,18 @@ library(tidyverse)
 library(dplyr)
 library(data.table)
 
+# Define directories for downloading and loading: 
+download_dir <- file.path("../../IMDb-Datasets")
+save_dir <- file.path("../../gen/temp")
+
 ## MERGING AND FILTERING MERGED DATASETS ##
 
 # Import data:
-long_series <- read_csv("long_series.csv")
-short_series <- read_csv("short_series.csv")
-names <- read_csv("names_series.csv")
-episodes <- read_csv("episodes.csv")
-rating <- read_tsv('title.ratings.tsv.gz')
+long_series <- read_csv(file.path(save_dir, "long_series.csv"))
+short_series <- read_csv(file.path(save_dir, "short_series.csv"))
+names <- read_csv(file.path(save_dir, "names_series.csv"))
+episodes <- read_csv(file.path(save_dir, "episodes.csv"))
+rating <- read_tsv(file.path(download_dir, "title.ratings.tsv.gz"))
 
 
 # Merging rating dataset with long & short season series datasets:
@@ -58,6 +62,6 @@ merged_long_series <- merged_long_series %>% filter(num_seasons < 99)
 merged_episodes <- merged_episodes %>% filter(num_seasons < 99)
 
 # Store merged datasets for long & short season series: 
-write_csv(merged_long_series, "merged_long_series.csv")
-write_csv(merged_short_series, "merged_short_series.csv")
-write_csv(merged_episodes, "merged_episodes.csv")
+write_csv(merged_long_series, file.path(save_dir, "merged_long_series.csv"))
+write_csv(merged_short_series, file.path(save_dir, "merged_short_series.csv"))
+write_csv(merged_episodes, file.path(save_dir, "merged_episodes.csv"))
