@@ -48,7 +48,7 @@ Datasets:
 
 ## Variables
 
-All three datasets contain one common variable: tconst, which is the unique identifier for different series and movies.
+All three datasets contain one common variable: tconst, which is the unique identifier for different series and movies in the rating and names datasets. In the episodes dataset, however, it is the unique identifier for episodes. Therefore, the tconst of episodes will be deleted, and parentTconst, which is equivalent to tconst in the other two datasets, will be renamed to tconst in order to cleanly merge the final dataset.
 
 
 | Dataset |   Variable   |                                  Definition                                                 |
