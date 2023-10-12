@@ -1,16 +1,21 @@
 DATA = ../../IMDb-Datasets
 TEMP = ../../gen/temp 
 
-all: $(TEMP)/merged_long_series.csv $(TEMP)/merged_short_series.csv $(TEMP)/merged_episodes.csv 
+all: Merging 
 
-$(DATA)/title.basics.tsv.gz $(DATA)/title.episode.tsv.gz $(DATA)/title.ratings.tsv.gz: Download.R
+Dir_create:
 	R -e "dir.create('../../IMDb-Datasets', recursive = TRUE)"
+	R -e "dir.create('../../gen/temp', recursive = TRUE)"
+
+Downloading: Dir_create
 	Rscript Download.R
 
-$(TEMP)/long_series.csv $(TEMP)/short_series.csv $(TEMP)/names_series.csv $(TEMP)/episodes.csv: $(DATA)/title.ratings.tsv.gz $(DATA)/title.episode.tsv.gz $(DATA)/title.basics.tsv.gz
-	R -e "dir.create('../../gen/temp', recursive = TRUE)"
+Cleaning:: Downloading
 	Rscript Cleaning.R
 	
-$(TEMP)/merged_episodes.csv $(TEMP)/merged_short_series.csv $(TEMP)/merged_long_series.csv: $(TEMP)/long_series.csv $(TEMP)/short_series.csv $(TEMP)/names_series.csv $(TEMP)/episodes.csv
+Merging: Cleaning
 	Rscript Merging.R
+	
+Clean:
+	rm
 	

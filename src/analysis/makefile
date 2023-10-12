@@ -1,9 +1,11 @@
 OUTPUT = ../../gen/output
 TEMP = ../../gen/temp
 
-all: $(OUTPUT)/plot.pdf 
+all: plot.pdf
 
-$(OUTPUT)/plot.pdf: $(TEMP)/merged_episodes.csv $(TEMP)/merged_short_series.csv $(TEMP)/merged_long_series.csv
+Dir_create:
 	R -e "dir.create('../../gen/output', recursive = TRUE)"
+
+plot.pdf: Dir_create
 	Rscript Plot.R
 

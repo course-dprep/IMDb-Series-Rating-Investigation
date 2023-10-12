@@ -48,7 +48,7 @@ Datasets:
 
 ## Variables
 
-All three datasets contain one common variable: tconst, which is the unique identifier for different series and movies.
+All three datasets contain one common variable: tconst, which is the unique identifier for different series and movies in the rating and names datasets. In the episodes dataset, however, it is the unique identifier for episodes. Therefore, the tconst of episodes will be deleted, and parentTconst, which is equivalent to tconst in the other two datasets, will be renamed to tconst in order to cleanly merge the final dataset.
 
 
 | Dataset |   Variable   |                                  Definition                                                 |
@@ -71,14 +71,14 @@ All three datasets contain one common variable: tconst, which is the unique iden
 
 As a next step, we have performed multiple transformations to reach our final dataset:
 - calculated the total number of episodes for each series
-- split the data into 2 datasets:
+- split the data into 2 sections:
   - long series (5+ seasons)
   - short series (2-4 seasons)
   Due to some inaccuracies with the data we have decided to exclude 1 season series.
 - filtered out the series with below 1000 votes
 - calculated the total running time of the series (in years)
 - performed necessary data cleaning tasks (removed duplicates and erroneous observations)
-- merged the data together to create 2 final datasets, for long and short series
+- merged the data together to create 2 final sections withing the dataset, for long and short series
 
 In the end, we were left with x observations for the long series dataset, and y for short series.
 
