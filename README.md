@@ -101,13 +101,25 @@ We have included 3 independent variables to try to find an answer to our researc
 Call:
 lm(formula = averageRating ~ num_episodes + numVotes + numVotes * long.x, data = merged_episodes)
 
-<img width="370" alt="Episodes_lm call" src="https://github.com/course-dprep/team-project-team-7/assets/143189371/fc5a1153-a814-490f-8d31-26b80e9c3e4c">
+<img width="518" alt="Linear Regression" src="https://github.com/course-dprep/IMDb-Series-Rating-Investigation/assets/143189371/a545dcd9-01c4-4e98-838c-cff00a337d54">
+
 
 
 ### Plot Screenshot
 X = num_episodes, Y= averageRating
 
-<img width="960" alt="Episodes_lm plot" src="https://github.com/course-dprep/team-project-team-7/assets/143189371/86816148-42d5-4f8f-bcda-cfb77e56d66b">
+<img width="959" alt="Plot" src="https://github.com/course-dprep/IMDb-Series-Rating-Investigation/assets/143189371/29b23ef3-2b92-4581-a80e-bbd114614309">
+
+
+### Box Plot Screenshot
+
+<img width="959" alt="Box Plot" src="https://github.com/course-dprep/IMDb-Series-Rating-Investigation/assets/143189371/29529551-c118-4261-905d-f0e6e193e7c9">
+
+
+### Histogram
+
+<img width="959" alt="Histogram" src="https://github.com/course-dprep/IMDb-Series-Rating-Investigation/assets/143189371/b349e6bf-e20a-4f9a-98c3-65e04fa52c4c">
+
 
 All variables in our model are significant - that's great news! We can see that the increasing number of episodes has a negative effect on the rating. It confirms the hypothesis that perhaps after a couple of seasons the formula runs out - viewers get bored. We can also see that series with a higher number of votes have higher ratings - that's to be expected. Interestingly, the coefficient for the interaction is negative - we can conclude that the negative effect of longer series becomes significantly weaker with the increase of popularity.
 
@@ -178,7 +190,7 @@ An alternative route to run the code would be:
 - ../src/data-preparation -> Cleaning.R
 - ../src/data-preparation -> Merging.R
 - ../src/analysis -> Plot.R
-- ../src/analysis -> RMarkdownfile
+- ../src/analysis -> Exploration.Rmd
 
 ----
 
