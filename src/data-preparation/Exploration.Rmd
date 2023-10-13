@@ -1,0 +1,79 @@
+---
+title: "Analysis"
+output: html_document
+date: "2023-10-13"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r include=FALSE}
+# Load libraries
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+```
+## Load data
+```{r echo=FALSE}
+download_dir <- file.path("../../IMDb-Datasets")
+save_dir <- file.path("../../gen/temp")
+
+merged_long_series <- read_csv(file.path(save_dir, "merged_long_series.csv"))
+merged_short_series <- read_csv(file.path(save_dir, "merged_short_series.csv"))
+merged_episodes <- read_csv(file.path(save_dir, "merged_episodes.csv"))
+```
+## Data exploration
+```{r}
+summary(merged_long_series)
+summary(merged_short_series)
+summary(merged_episodes)
+```
+## Regression
+
+```{r}
+episodes_lm <- lm(averageRating ~ num_episodes + numVotes + numVotes*long.x, data = merged_episodes)
+summary(episodes_lm)
+```
+
+## Data visualization
+```{r echo=FALSE}
+# Add a regression line to the plot with geom_smooth()
+plot <- ggplot(data = episodes_lm, aes(x = num_episodes, y = averageRating)) +
+  
+  # Add points to the plot with geom_point()
+  geom_point() +
+  xlim(0,1500) +
+  labs(x= "Number of Episodes", y = "Average Rating", title = "Regression of Length on Votes") +
+  # Add a regression line to the plot with geom_smooth()
+  geom_smooth(method = "lm", se = FALSE)
+print(plot)
+```
+
+
+```{r echo=FALSE}
+boxplot <- ggplot() +
+  geom_boxplot(data = merged_short_series, aes(x = "Short Series", y = averageRating), fill = "purple") +
+  geom_boxplot(data = merged_long_series, aes(x = "Long Series", y = averageRating), fill = "lightgreen") +
+  labs(x = "", y = "Average Rating", title = "Comparison of Ratings spread between Short and Long Series") +
+  theme_minimal()
+print(boxplot)
+```
+
+```{r echo=FALSE}
+histogram <- ggplot() +
+  geom_histogram(data = merged_short_series, aes(x = averageRating, fill = "Short Series"), alpha = 0.5, bins = 30, position="identity") +
+  geom_histogram(data = merged_long_series, aes(x = averageRating, fill = "Long Series"), alpha = 0.5, bins = 30, position="identity") +
+  labs(x = "Average Rating", y = "Frequency", title = "Distribution of Ratings for Short and Long Series") +
+  theme_minimal() +
+  scale_fill_manual(values = c("Short Series" = "skyblue", "Long Series" = "pink")) +
+  guides(fill = guide_legend(title = "Series Length"))
+print(histogram)
+```
+
+## Conclusion
+The regression results show that the length of a series itself does not have a significant effect on a series' rating. However, it does have a significant effect on the number of votes a series receives. Furthermore, the number of votes has a significant effect on the rating. Overall we can conclude that, on the basis of our research results, longer series receive a lower rating.
+
+### Limitations and recommendations
+This research has a low R-squared value, implying that, while our variables have a significant impact on the dependent variables, our results do not explain much of the variance of the dependent variable. The num_seasons variable contained barely any values over 9, while looking up the shows itself on the internet, showed that multiple of those series had season values higher than 9. 
+Additional datasets could be used in the future to fill the incorrect or missing data in this research.
