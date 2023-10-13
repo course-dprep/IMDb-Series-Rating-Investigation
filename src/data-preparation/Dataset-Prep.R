@@ -7,49 +7,43 @@ install.packages("dplyr")
 install.packages("data.table")
 install.packages("ggplot2")
 
-# Load packages: 
+# Libraries: 
 library(tidyverse)
 library(dplyr)
 library(data.table)
 library(ggplot2)
 
-# Check and set working directory
-getwd()
-setwd("C:/team-project-team-7")
+# Define directories for downloading and loading: 
+download_dir <- file.path("../../IMDb-Datasets")
+save_dir <- file.path("../../gen/temp")
+output_dir <- file.path("../../gen/output")
 
-# Set up paths for downloading and loading datasets
-# Set the base directory
-base_dir <- "C:/team-project-team-7"
+# Download relevant datasets: 
+urls = c("https://datasets.imdbws.com/title.episode.tsv.gz", "https://datasets.imdbws.com/title.ratings.tsv.gz", "https://datasets.imdbws.com/title.basics.tsv.gz")
 
-# Define the directories for downloading and loading
-download_dir <- file.path(base_dir, "gen/data-preparation/temp")
-save_dir <- file.path(base_dir, "gen/data-preparation/input")
+# Define the corresponding filenames: 
+filenames = c("title.episode.tsv.gz",
+              "title.ratings.tsv.gz",
+              "title.basics.tsv.gz")
 
-# Download relevant datasets to the download directory
-urls <- c(
-  "https://datasets.imdbws.com/title.episode.tsv.gz",
-  "https://datasets.imdbws.com/title.ratings.tsv.gz",
-  "https://datasets.imdbws.com/title.basics.tsv.gz"
-)
-
-filenames <- c(
-  "title.episode.tsv.gz",
-  "title.ratings.tsv.gz",
-  "title.basics.tsv.gz"
-)
-
+# Loop through the URLs and filenames: 
 for (i in 1:length(urls)) {
-  download.file(urls[i], destfile = file.path(download_dir, filenames[i]), mode = "wb")
+  download.file(urls[i], destfile = file.path(download_dir, filenames[i]), mode="wb")
 }
-# Load all three datasets from the download directory
-library(readr)
 
+# Load all three datasets from the download directory
 episodes <- read_tsv(file.path(download_dir, "title.episode.tsv.gz"))
 rating <- read_tsv(file.path(download_dir, "title.ratings.tsv.gz"))
 names <- read_tsv(file.path(download_dir, "title.basics.tsv.gz"))
 
 
 ## SERIES/EPISODES & NAMES DATASET PREPARATION AND CLEANING ##
+
+# Load all three datasets: 
+episodes <- read_tsv(file.path(download_dir, "title.episode.tsv.gz"))
+rating <- read_tsv(file.path(download_dir, "title.ratings.tsv.gz"))
+names <- read_tsv(file.path(download_dir, "title.basics.tsv.gz"))
+
 
 # Count total number of episodes and creating new column: 
 episodes <- episodes %>% 
@@ -74,25 +68,24 @@ episodes <- episodes %>%
 
 
 # Create a dummy for long series
+# Assuming you have a data frame named 'IMDb_data' with a 'num_seasons' column
 # Create a 'long' column based on 'num_seasons'
 episodes <- episodes %>% mutate(long = ifelse(episodes$num_seasons >= 5, 1, 0)) 
 
 
-
 # Filter the number of seasons to separate long & short series: 
 long_series <- episodes %>%
-  filter(num_seasons >= 5)
+  filter(num_seasons >= 5 & num_seasons < 99)
 short_series <- episodes %>% 
   filter(num_seasons > 1 & num_seasons < 5)
+episodes <- episodes %>%
+  filter(num_seasons > 1 & num_seasons < 99)
 
 
 # Remove series with unsubstantiated number of episodes compared to seasons:
 long_series <- long_series %>% filter(num_episodes >= num_seasons)
 short_series <- short_series %>% filter(num_episodes >= num_seasons)
 episodes <- episodes %>% filter(num_episodes >= num_seasons)
-
-# Rename dataset episodes:
-episodes_df <- episodes
 
 # Select specific column from the dataset of names: 
 names <- names %>%
@@ -102,28 +95,29 @@ names <- names %>%
 write_csv(long_series, file.path(save_dir, "long_series.csv"))
 write_csv(short_series, file.path(save_dir, "short_series.csv"))
 write_csv(names, file.path(save_dir, "names_series.csv"))
-write_csv(episodes_df, file.path(save_dir, "episodes.csv"))
+write_csv(episodes, file.path(save_dir, "episodes.csv"))
 
 
 ## MERGING AND FILTERING MERGED DATASETS ##
 
 # Import data:
-long_series <- read_csv("long_series.csv")
-short_series <- read_csv("short_series.csv")
-names <- read_csv("names_series.csv")
-episodes_df <- read_csv("episodes.csv")
+long_series <- read_csv(file.path(save_dir, "long_series.csv"))
+short_series <- read_csv(file.path(save_dir, "short_series.csv"))
+names <- read_csv(file.path(save_dir, "names_series.csv"))
+episodes <- read_csv(file.path(save_dir, "episodes.csv"))
+rating <- read_tsv(file.path(download_dir, "title.ratings.tsv.gz"))
 
 
 # Merging rating dataset with long & short season series datasets:
 long_series_rating <- left_join(long_series, rating, by = 'tconst')
 short_series_rating <- left_join(short_series, rating, by = 'tconst')
-episodes_rating <- left_join(episodes_df, rating, by = 'tconst')
+episodes_rating <- left_join(episodes, rating, by = 'tconst')
 
 
 # Merging long & short seasons series with names:
 long_series <- left_join(long_series, names, by = 'tconst')
 short_series <- left_join(short_series, names, by = 'tconst')
-episodes_series <- left_join(episodes_df, names, by = 'tconst')
+episodes_series <- left_join(episodes, names, by = 'tconst')
 
 
 # Merging long & short merged datasets with rating:
@@ -154,22 +148,18 @@ merged_short_series <- merged_short_series %>%
   mutate(endYear = ifelse(endYear == "\\N", "Ongoing", endYear))
 
 
-# Remove outliers from merged_long_series dataset: 
-merged_long_series <- merged_long_series %>% filter(num_seasons < 99)
-merged_episodes <- merged_episodes %>% filter(num_seasons < 99)
-
 # Store merged datasets for long & short season series: 
-write_csv(merged_long_series, "merged_long_series.csv")
-write_csv(merged_short_series, "merged_short_series.csv")
-write_csv(merged_episodes, "merged_episodes.csv")
+write_csv(merged_long_series, file.path(save_dir, "merged_long_series.csv"))
+write_csv(merged_short_series, file.path(save_dir, "merged_short_series.csv"))
+write_csv(merged_episodes, file.path(save_dir, "merged_episodes.csv"))
 
 
 ## LINEAR REGRESSION/PLOT TABLE ##
 
 # Import data:
-merged_long_series <- read_csv("merged_long_series.csv")
-merged_short_series <- read_csv("merged_short_series.csv")
-merged_episodes <- read_csv("merged_episodes.csv")
+merged_long_series <- read_csv(file.path(save_dir, "merged_long_series.csv"))
+merged_short_series <- read_csv(file.path(save_dir, "merged_short_series.csv"))
+merged_episodes <- read_csv(file.path(save_dir, "merged_episodes.csv"))
 
 # Linear regression/DV: averageRating, IVs: num_episodes, numVotes, Interaction: numVotes*long.x 
 episodes_lm <- lm(averageRating ~ num_episodes + numVotes + numVotes*long.x, data = merged_episodes)
@@ -186,7 +176,25 @@ plot <- ggplot(data = episodes_lm, aes(x = num_episodes, y = averageRating)) +
   # Add a regression line to the plot with geom_smooth()
   geom_smooth(method = "lm", se = FALSE)
 
-ggsave("plot.pdf", plot, width = 8, height = 6)
+# Boxplot for averageRating
+boxplot <- ggplot() +
+  geom_boxplot(data = merged_short_series, aes(x = "Short Series", y = averageRating), fill = "purple") +
+  geom_boxplot(data = merged_long_series, aes(x = "Long Series", y = averageRating), fill = "lightgreen") +
+  labs(x = "", y = "Average Rating", title = "Comparison of Ratings between Short and Long Series") +
+  theme_minimal()
+
+# Histogram
+histogram <- ggplot() +
+  geom_histogram(data = merged_short_series, aes(x = averageRating, fill = "Short Series"), alpha = 0.5, bins = 30, position="identity") +
+  geom_histogram(data = merged_long_series, aes(x = averageRating, fill = "Long Series"), alpha = 0.5, bins = 30, position="identity") +
+  labs(x = "Average Rating", y = "Frequency", title = "Distribution of Ratings for Short and Long Series") +
+  theme_minimal() +
+  scale_fill_manual(values = c("Short Series" = "skyblue", "Long Series" = "pink")) +
+  guides(fill = guide_legend(title = "Series Length"))
+
+ggsave(file.path(output_dir, "plot.pdf"), plot, width = 8, height = 6)
+ggsave(file.path(output_dir, "boxplot.pdf"), boxplot, width = 8, height = 6)
+ggsave(file.path(output_dir, "histogram.pdf"), histogram, width = 8, height = 6) 
 
 
 
