@@ -8,15 +8,17 @@
 
 
 
-# Research Question
-How the IMDb ratings of the viewers for TV Shows/Series are affected by their length in seasons and episodes?
+# Research Questions
+How are the IMDb ratings of the viewers for TV Shows/Series affected by their length in seasons and episodes?
+Does that effect change when you take into account the popularity of the series? 
+
 
 ----
 
 
 ## Research Motivation & Project Description
 Welcome to our GitHub repository!
-In the modern digital era we live in, we are presented with the opportunity to be able to evaluate and express a personal opinion in almost any area of our daily life. More specifically, in the field of entertainment through films and series, the rating system plays a particularly important role in the public's decision to choose between a movie or a series, while at the same time it is subconsciously influencing in advance the individual's attitude towards what he or she is about to watch. Therefore it is significant to realize the factors that influence people's opinion and judgement, and alongside to correlate their behaviour with the way they approach and interact with films and series. In this project we will research the IMDb ratings for TV Shows/Series and we will try to analyze the way in which those ratings are influenced by the number of seasons and episodes of each series.
+In the modern digital era we live in, we are presented with the opportunity to be able to evaluate and express a personal opinion in almost any area of our daily life. More specifically, in the field of entertainment through films and series, the rating system plays a particularly important role in the public's decision to choose between a movie or a series, while at the same time it is subconsciously influencing in advance the individual's attitude towards what he or she is about to watch. Therefore it is significant to realize the factors that influence people's opinion and judgement, and alongside to correlate their behaviour with the way they approach and interact with films and series. In this project we will research the IMDb ratings for TV Shows/Series and we will try to analyze the way in which those ratings are influenced by the number of seasons and episodes of each series. We will also attempt to measure the popularity by including the number of votes for each series on the IMDb website, and consider whether its impact on the rating differs based on the length of the series. We are going to utilize a linear regression model to obtain our results, as well as include plots and graphs to illustrate our findings.
 
 ----
 
@@ -74,18 +76,24 @@ As a next step, we have performed multiple transformations to reach our final da
 - split the data into 2 sections:
   - long series (5+ seasons)
   - short series (2-4 seasons)
-  Due to some inaccuracies with the data we have decided to exclude 1 season series.
-- filtered out the series with below 1000 votes
-- calculated the total running time of the series (in years)
+- filtered out the series with below 1000 votes (as there might be some obscure series with unreliable/biased data)
 - performed necessary data cleaning tasks (removed duplicates and erroneous observations)
-- merged the data together to create 2 final sections withing the dataset, for long and short series
 
-In the end, we were left with x observations for the long series dataset, and y for short series.
+- merged the data together to create the final dataset, with a dummy variable to split long and short series
+
+Due to some inaccuracies with the data we have decided to exclude 1 season series.
+We have also not included the exact number of seasons as a variable, as series with 10+ seasons would only show 9 seasons in the initial dataset. 
+
+
+In the end, we were left with x observations for our final dataset: 1733 long series, and 3444 short ones.
 
 ## Analysis
 
 Next, we have performed a linear regression to analyze the data. As a dependent variable we have taken the average rating for each series.
-We have included 3 independent variables to try to find an answer to our research question.
+We have included 3 independent variables to try to find an answer to our research question:
+- number of episodes - in our opinion the best method to measure the length on the series, since we could not include the amount of seasons.
+- number of votes - to estimate the show's popularity
+- interaction between the number of votes and the dummy variable for long series - to see if the effect of the series' length is stronger for more popular series   
 
 # Results
 
@@ -101,7 +109,9 @@ X = num_episodes, Y= averageRating
 
 <img width="960" alt="Episodes_lm plot" src="https://github.com/course-dprep/team-project-team-7/assets/143189371/86816148-42d5-4f8f-bcda-cfb77e56d66b">
 
-(here we write about the results of our analysis, maybe insert some graphs, maybe give some summary statistics)
+All variables in our model are significant - that's great news! We can see that the increasing number of episodes has a negative effect on the rating. It confirms the hypothesis that perhaps after a couple of seasons the formula runs out - viewers get bored. We can also see that series with a higher number of votes have higher ratings - that's to be expected. Interestingly, the coefficient for the interaction is negative - we can conclude that the negative effect of longer series becomes significantly weaker with the increase of popularity.
+
+It has to be said however, since our project only focused on a specific interaction, the model only explains a small percentage of the variance. In reality there are numerous other factors which influence the rating of a series. In further, more advanced projects it would be interesting to also include other variables, such as the production budget, genre, director, actors etc.
 
 ----
 
@@ -168,11 +178,6 @@ An alternative route to run the code would be:
 - ../src/data-preparation -> add our files
 - ../src/data-preparation -> add our files
 - ../src/analysis -> add our files
-
-----
-
-## More resources
-Point interested users to any related literature and/or documentation.
 
 ----
 
