@@ -78,10 +78,12 @@ As a next step, we have performed multiple transformations to reach our final da
   - short series (2-4 seasons)
 - filtered out the series with below 1000 votes (as there might be some obscure series with unreliable/biased data)
 - performed necessary data cleaning tasks (removed duplicates and erroneous observations)
+
 - merged the data together to create the final dataset, with a dummy variable to split long and short series
 
 Due to some inaccuracies with the data we have decided to exclude 1 season series.
 We have also not included the exact number of seasons as a variable, as series with 10+ seasons would only show 9 seasons in the initial dataset. 
+
 
 In the end, we were left with x observations for our final dataset: 1733 long series, and 3444 short ones.
 

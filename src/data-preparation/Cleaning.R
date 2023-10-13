@@ -45,9 +45,11 @@ episodes <- episodes %>% mutate(long = ifelse(episodes$num_seasons >= 5, 1, 0))
 
 # Filter the number of seasons to separate long & short series: 
 long_series <- episodes %>%
-  filter(num_seasons >= 5)
+  filter(num_seasons >= 5 & num_seasons < 99)
 short_series <- episodes %>% 
   filter(num_seasons > 1 & num_seasons < 5)
+episodes <- episodes %>%
+  filter(num_seasons > 1 & num_seasons < 99)
 
 
 # Remove series with unsubstantiated number of episodes compared to seasons:
