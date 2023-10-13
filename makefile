@@ -1,4 +1,4 @@
-all: analysis
+all: analysis data-preparation
 
 data-preparation: 
 	make -C src/data-preparation
@@ -9,5 +9,3 @@ analysis: data-preparation
 clean: 
 	R -e "unlink('IMDb-Datasets', recursive = TRUE)"
 	R -e "unlink('gen', recursive = TRUE)"
-
-	
