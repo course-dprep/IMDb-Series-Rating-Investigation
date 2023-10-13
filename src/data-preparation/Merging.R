@@ -57,11 +57,6 @@ merged_short_series <- merged_short_series %>%
   mutate(endYear = ifelse(endYear == "\\N", "Ongoing", endYear))
 
 
-# Remove outliers from merged_long_series dataset: 
-merged_long_series <- merged_long_series %>% filter(num_seasons < 99)
-merged_episodes <- merged_episodes %>% filter(num_seasons < 99)
-merged_episodes <- merged_episodes %>% filter(num_seasons > 1)
-
 # Store merged datasets for long & short season series: 
 write_csv(merged_long_series, file.path(save_dir, "merged_long_series.csv"))
 write_csv(merged_short_series, file.path(save_dir, "merged_short_series.csv"))
