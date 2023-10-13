@@ -121,9 +121,8 @@ Structure and files of the repository:
 ├── README.md <br>
 ├── data <br>
 ├── gen <br>
-│   ├── analysis <br>
-│   ├── data-preparation <br>
-│   └── paper <br>
+│   ├── temp <br>
+│   ├── output <br>
 └── src <br>
     ├── analysis <br>
     ├── data-preparation <br>
@@ -155,13 +154,13 @@ To run the code, follow these instructions:
 1. Fork this repository
 2. Open your command line / terminal and run the following code:
 ```
-git clone https://github.com/{your username}/team-project-team-7.git
+git clone https://github.com/{your username}/IMDb-Series-Rating-Investigation.git
 ```
-3. Set your working directory to `team-project-team-7` and run the following command:
+3. Set your working directory to `IMDb-Series-Rating-Investigation` and run the following command:
 ```
 make
 ```
-4. "We should add our own steps here. I uploded this in the readme file to have a path to work."
+4. When make has succesfully run all the code, 
 
 5. To clean the data of all raw and unnecessary data files created during the pipeline, run the following code in the command line / terminal:
 ```
@@ -175,13 +174,16 @@ Note: when the command line/terminal is closed, the website will not be availabl
 
 ### Alternative route
 An alternative route to run the code would be:
-- ../src/data-preparation -> add our files
-- ../src/data-preparation -> add our files
-- ../src/analysis -> add our files
+- ../src/data-preparation -> Download.R
+- ../src/data-preparation -> Cleaning.R
+- ../src/data-preparation -> Merging.R
+- ../src/analysis -> Plot.R
+- ../src/analysis -> RMarkdownfile
 
 ----
 
 ## About
+#### Team 7
 These are the contributors of the project:
 - Georgios Oikonomou (g.oikonomou_1@tilburguniversity.edu)
 - Flip Gootjes (f.gootjes@tilburguniversity.edu)
