@@ -1,6 +1,8 @@
 ---
-title: "Analysis"
-output: html_document
+title: "Exploring the IMDB Data for episodes length and ratings"
+output:
+  html_document: default
+  pdf_document: default
 date: "2023-10-13"
 ---
 
@@ -23,20 +25,25 @@ merged_long_series <- read_csv(file.path(save_dir, "merged_long_series.csv"))
 merged_short_series <- read_csv(file.path(save_dir, "merged_short_series.csv"))
 merged_episodes <- read_csv(file.path(save_dir, "merged_episodes.csv"))
 ```
-## Data exploration
+
+## Introduction
+
+In this project we will research the IMDb ratings for TV Shows/Series and we will try to analyze the way in which those ratings are influenced by the number of seasons and episodes of each series.
+
+### Data exploration
+The Figure shows the descriptive statistics of different datasets in this study
 ```{r}
 summary(merged_long_series)
 summary(merged_short_series)
 summary(merged_episodes)
 ```
-## Regression
-
+### Regression
 ```{r}
 episodes_lm <- lm(averageRating ~ num_episodes + numVotes + numVotes*long.x, data = merged_episodes)
 summary(episodes_lm)
 ```
 
-## Data visualization
+### Data visualization
 ```{r echo=FALSE}
 # Add a regression line to the plot with geom_smooth()
 plot <- ggplot(data = episodes_lm, aes(x = num_episodes, y = averageRating)) +
@@ -51,7 +58,7 @@ print(plot)
 ```
 
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.cap="In this boxplot, we can see that both long series and short series have their average ratings mainly distributed between 6 and 8. The range of long series is slightly larger, and the overall average rating is slightly higher than that of short series.", fig.show="inline", fig.width = 6, fig.height = 4}
 boxplot <- ggplot() +
   geom_boxplot(data = merged_short_series, aes(x = "Short Series", y = averageRating), fill = "purple") +
   geom_boxplot(data = merged_long_series, aes(x = "Long Series", y = averageRating), fill = "lightgreen") +
@@ -60,7 +67,7 @@ boxplot <- ggplot() +
 print(boxplot)
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.cap="In this histogram, we compared the distribution of ratings between long series and short series, further demonstrating that the rating distributions of the two datasets are similar. However, for long series, the distribution is more evenly spread between 6.5-8 points, while for short series it is more concentrated around 7-7.5 points.", fig.show="inline", fig.width = 6, fig.height = 4}
 histogram <- ggplot() +
   geom_histogram(data = merged_short_series, aes(x = averageRating, fill = "Short Series"), alpha = 0.5, bins = 30, position="identity") +
   geom_histogram(data = merged_long_series, aes(x = averageRating, fill = "Long Series"), alpha = 0.5, bins = 30, position="identity") +
