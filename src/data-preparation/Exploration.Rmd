@@ -2,6 +2,7 @@
 title: "Exploring the IMDB Data for episodes length and ratings"
 output:
   html_document: default
+  word_document: default
   pdf_document: default
 date: "2023-10-13"
 ---

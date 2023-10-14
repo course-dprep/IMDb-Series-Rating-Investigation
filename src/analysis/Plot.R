@@ -7,7 +7,7 @@ library(ggplot2)
 # Define directories for downloading and loading:
 download_dir <- file.path("../../IMDb-Datasets")
 save_dir <- file.path("../../gen/temp")
-output_dir <- file.path("../paper")
+output_dir <- file.path("../../gen/output")
 
 ## LINEAR REGRESSION/PLOT TABLE ##
 
