@@ -123,6 +123,9 @@ X = num_episodes, Y= averageRating
 
 All variables in our model are significant - that's great news! We can see that the increasing number of episodes has a negative effect on the rating. It confirms the hypothesis that perhaps after a couple of seasons the formula runs out - viewers get bored. We can also see that series with a higher number of votes have higher ratings - that's to be expected. Interestingly, the coefficient for the interaction is negative - we can conclude that the negative effect of longer series becomes significantly weaker with the increase of popularity.
 
+The scatterplot illustrates these results very well, we can clearly see the steady decrease in rating as the number of episodes increases. 
+The box plot and the histogram show the structure of the dataset divided into long and short series and compare the distribution of ratings. Both plots show a similar story - the distribution does not differ substantially across both groups.
+
 It has to be said however, since our project only focused on a specific interaction, the model only explains a small percentage of the variance. In reality there are numerous other factors which influence the rating of a series. In further, more advanced projects it would be interesting to also include other variables, such as the production budget, genre, director, actors etc.
 
 ----
