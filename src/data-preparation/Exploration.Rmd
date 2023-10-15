@@ -1,9 +1,8 @@
 ---
 title: "Exploring the IMDB Data for episodes length and ratings"
+author: "Team 7"
 output:
-  html_document: default
-  word_document: default
-  pdf_document: default
+html_document: Default
 date: "2023-10-13"
 ---
 
@@ -59,7 +58,7 @@ print(plot)
 ```
 
 
-```{r echo=FALSE, fig.cap="In this boxplot, we can see that both long series and short series have their average ratings mainly distributed between 6 and 8. The range of long series is slightly larger, and the overall average rating is slightly higher than that of short series.", fig.show="inline", fig.width = 6, fig.height = 4}
+```{r echo=FALSE, fig.cap="In this boxplot, we can see that both long series and short series have their average ratings mainly distributed between 6 and 8. The range of long series is slightly larger, and the median of rating is slightly higher than that of short series.", fig.show="inline", fig.width = 6, fig.height = 4}
 boxplot <- ggplot() +
   geom_boxplot(data = merged_short_series, aes(x = "Short Series", y = averageRating), fill = "purple") +
   geom_boxplot(data = merged_long_series, aes(x = "Long Series", y = averageRating), fill = "lightgreen") +

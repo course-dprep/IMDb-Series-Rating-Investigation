@@ -195,7 +195,3 @@ histogram <- ggplot() +
 ggsave(file.path(output_dir, "plot.pdf"), plot, width = 8, height = 6)
 ggsave(file.path(output_dir, "boxplot.pdf"), boxplot, width = 8, height = 6)
 ggsave(file.path(output_dir, "histogram.pdf"), histogram, width = 8, height = 6) 
-
-
-
-
