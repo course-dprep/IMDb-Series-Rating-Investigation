@@ -1,4 +1,4 @@
-# Project title
+# TV Series Length Investigation
 *Investigating how the IMDb ratings for TV Shows/Series are affected by their length in seasons and episodes*
 
 
