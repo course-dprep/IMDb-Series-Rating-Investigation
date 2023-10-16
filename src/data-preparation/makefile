@@ -17,4 +17,4 @@ $(TEMP)/merged_episodes.csv $(TEMP)/merged_short_series.csv $(TEMP)/merged_long_
 
 $(OUTPUT)/Exploration.html: Exploration.Rmd $(TEMP)/merged_episodes.csv $(TEMP)/merged_short_series.csv $(TEMP)/merged_long_series.csv
 	R -e "dir.create('../../gen/output', recursive = TRUE)"
-	Rscript -e 'rmarkdown::render("Exploration.Rmd")'
+	Rscript -e 'rmarkdown::render("Exploration.Rmd", output_file= "../../gen/output/Exploration.html")'
