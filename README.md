@@ -192,8 +192,8 @@ An alternative route to run the code would be:
 - ../src/data-preparation -> Download.R
 - ../src/data-preparation -> Cleaning.R
 - ../src/data-preparation -> Merging.R
+- ../src/data-preparation -> Exploration.Rmd
 - ../src/analysis -> Plot.R
-- ../src/analysis -> Exploration.Rmd
 
 ----
 
